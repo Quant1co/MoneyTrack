@@ -1,0 +1,39 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+development:
+  <<: *default
+  database: money_track_development
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+
+  
+test:
+  <<: *default
+  database: money_track_test
+  username: <%= ENV["DATABASE_USER"] %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
+
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: money_track_production
+    username: money_track
+    password: <%= ENV["MONEY_TRACK_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: money_track_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: money_track_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: money_track_production_cable
+    migrations_paths: db/cable_migrate
