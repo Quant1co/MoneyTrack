@@ -1,0 +1,137 @@
+<html><head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Управление финансами</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'loginindex', media: 'all' %>
+</head>
+<body>
+<header class="header">
+  <div class="auth-buttons">
+    <a class="auth-button profile-btn">Мой профиль</a>
+    <%= link_to "Выйти", logout_path, method: :delete, class: "auth-button logout-btn" %>
+  </div>
+  <h1>MoneyTrack</h1>
+  <p>Ваш личный финансовый помощник</p>
+</header>
+
+<section class="finance-section">
+  <div class="account-card">
+    <h2>Копилка</h2>
+    <div class="balance">75,000 ₽</div>
+    <div class="account-info">
+      <p>Цель: 100,000 ₽</p>
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+      <p>Прогресс: 75%</p>
+    </div>
+    <div class="account-info">
+      <p>Ежемесячный взнос: 5,000 ₽</p>
+    </div>
+  </div>
+
+  <div class="expense-tracker">
+    <h2>Отслеживание расходов</h2>
+    <div class="expense-form">
+      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
+      <input type="text" id="expense-description" placeholder="Описание расхода">
+      <button onclick="addExpense()">Добавить расход</button>
+    </div>
+    <canvas id="expense-chart"></canvas>
+  </div>
+
+  <div class="account-card">
+    <h2>Основной счет</h2>
+    <div class="balance">150,000 ₽</div>
+    <div class="account-info">
+      <p>Доступно: 145,000 ₽</p>
+      <p>Заблокировано: 5,000 ₽</p>
+    </div>
+    <div class="account-info">
+      <p>Последние операции:</p>
+      <p>Продукты -2,500 ₽</p>
+      <p>Кафе -800 ₽</p>
+      <p>Транспорт -100 ₽</p>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="card">
+    <h2>Финансовые советы</h2>
+    <div class="tip">
+      <h3>🎯 Правило 50/30/20</h3>
+      <p>50% дохода на необходимые расходы, 30% на желания, 20% на сбережения</p>
+    </div>
+    <div class="tip">
+      <h3>💰 Подушка безопасности</h3>
+      <p>Создайте запас денег на 3-6 месяцев жизни</p>
+    </div>
+    <div class="tip">
+      <h3>📈 Инвестиции</h3>
+      <p>Начните инвестировать даже небольшие суммы регулярно</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Курсы валют</h2>
+    <div class="currency-item">
+      <span>USD/RUB</span>
+      <span class="up">91.45 ₽ (+0.2%)</span>
+    </div>
+    <div class="currency-item">
+      <span>EUR/RUB</span>
+      <span class="down">98.32 ₽ (-0.1%)</span>
+    </div>
+    <div class="currency-item">
+      <span>CNY/RUB</span>
+      <span class="up">12.67 ₽ (+0.3%)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Популярные акции</h2>
+    <div class="stock-item">
+      <span>Сбербанк</span>
+      <span class="up">270.45 ₽ (+1.2%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Газпром</span>
+      <span class="down">165.32 ₽ (-0.5%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Яндекс</span>
+      <span class="up">2750.80 ₽ (+2.1%)</span>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Контактная информация</h3>
+      <p>📍 Москва, ул. Финансовая, 123</p>
+      <p>📞 8 (800) 123-45-67</p>
+      <p>📧 support@moneytrack.ru</p>
+    </div>
+    <div class="footer-section">
+      <h3>Режим работы</h3>
+      <p>Понедельник - Пятница: 9:00 - 20:00</p>
+      <p>Суббота: 10:00 - 17:00</p>
+      <p>Воскресенье: выходной</p>
+    </div>
+    <div class="footer-section">
+      <h3>Социальные сети</h3>
+      <div class="social-links">
+        <a href="https://vk.com/moneytrack">VK</a>
+        <a href="https://t.me/moneytrack">Telegram</a>
+        <a href="https://www.youtube.com/moneytrack">YouTube</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 MoneyTrack. Все права защищены.</p>
+  </div>
+</footer>
+</body>
+</html>

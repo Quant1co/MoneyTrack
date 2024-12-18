@@ -1,0 +1,267 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Управление финансами</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'homestyle', media: 'all' %>
+</head>
+<body>
+<header class="header">
+  <div class="auth-buttons">
+    <%= link_to "Войти", login_path, class: "auth-button login-btn" %>
+    <%= link_to "Регистрация", register_path, class: "auth-button register-btn" %>
+  </div>
+  <h1>MoneyTrack</h1>
+  <p>Ваш личный финансовый помощник</p>
+</header>
+
+<section class="finance-section">
+  <div class="account-card">
+    <h2>Копилка</h2>
+    <div class="balance">75,000 ₽</div>
+    <div class="account-info">
+      <p>Цель: 100,000 ₽</p>
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+      <p>Прогресс: 75%</p>
+    </div>
+    <div class="account-info">
+      <p>Ежемесячный взнос: 5,000 ₽</p>
+    </div>
+    <button class="account-button">Добавить</button>
+  </div>
+
+  <div class="expense-tracker">
+    <h2>Отслеживание расходов</h2>
+    <div class="expense-form">
+      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
+      <input type="text" id="expense-description" placeholder="Описание расхода">
+      <button onclick="addExpense()">Добавить расход</button>
+    </div>
+    <canvas id="expense-chart"></canvas>
+  </div>
+
+  <div class="account-card">
+    <h2>Основной счет</h2>
+    <div class="balance">150,000 ₽</div>
+    <div class="account-info">
+      <p>Доступно: 145,000 ₽</p>
+      <p>Заблокировано: 5,000 ₽</p>
+    </div>
+    <div class="account-info">
+      <p>Последние операции:</p>
+      <p>Продукты -2,500 ₽</p>
+      <p>Кафе -800 ₽</p>
+      <p>Транспорт -100 ₽</p>
+    </div>
+    <button class="account-button">Пополнить</button>
+  </div>
+</section>
+
+<div class="container">
+  <div class="card">
+    <h2>Финансовые советы</h2>
+    <div class="tip">
+      <h3>🎯 Правило 50/30/20</h3>
+      <p>50% дохода на необходимые расходы, 30% на желания, 20% на сбережения</p>
+    </div>
+    <div class="tip">
+      <h3>💰 Подушка безопасности</h3>
+      <p>Создайте запас денег на 3-6 месяцев жизни</p>
+    </div>
+    <div class="tip">
+      <h3>📈 Инвестиции</h3>
+      <p>Начните инвестировать даже небольшие суммы регулярно</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Курсы валют</h2>
+    <div class="currency-item">
+      <span>USD/RUB</span>
+      <span class="up">91.45 ₽ (+0.2%)</span>
+    </div>
+    <div class="currency-item">
+      <span>EUR/RUB</span>
+      <span class="down">98.32 ₽ (-0.1%)</span>
+    </div>
+    <div class="currency-item">
+      <span>CNY/RUB</span>
+      <span class="up">12.67 ₽ (+0.3%)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Популярные акции</h2>
+    <div class="stock-item">
+      <span>Сбербанк</span>
+      <span class="up">270.45 ₽ (+1.2%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Газпром</span>
+      <span class="down">165.32 ₽ (-0.5%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Яндекс</span>
+      <span class="up">2750.80 ₽ (+2.1%)</span>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Контактная информация</h3>
+      <p>📍 Москва, ул. Финансовая, 123</p>
+      <p>📞 8 (800) 123-45-67</p>
+      <p>📧 support@moneytrack.ru</p>
+    </div>
+    <div class="footer-section">
+      <h3>Режим работы</h3>
+      <p>Понедельник - Пятница: 9:00 - 20:00</p>
+      <p>Суббота: 10:00 - 17:00</p>
+      <p>Воскресенье: выходной</p>
+    </div>
+    <div class="footer-section">
+      <h3>Социальные сети</h3>
+      <div class="social-links">
+        <a href="https://vk.com/moneytrack">VK</a>
+        <a href="https://t.me/moneytrack">Telegram</a>
+        <a href="https://www.youtube.com/moneytrack">YouTube</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 MoneyTrack. Все права защищены.</p>
+  </div>
+</footer>
+
+<script>
+    // Обновление данных каждые 5 минут
+    function updateFinancialData() {
+        console.log('Обновление финансовых данных...');
+    }
+
+    function highlightNewData(element) {
+        element.classList.add('highlight');
+        setTimeout(() => {
+            element.classList.remove('highlight');
+        }, 2000);
+    }
+
+    setInterval(updateFinancialData, 300000);
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+    });
+
+    const tips = [
+        "Ведите учет всех расходов",
+        "Используйте кэшбэк-сервисы",
+        "Планируйте крупные покупки заранее"
+    ];
+
+    function addNewTip() {
+        const tipsContainer = document.querySelector('.card:first-child');
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        const tipElement = document.createElement('div');
+        tipElement.className = 'tip';
+        tipElement.innerHTML = `
+            <h3>💡 Совет дня</h3>
+            <p>${randomTip}</p>
+        `;
+        tipsContainer.appendChild(tipElement);
+        highlightNewData(tipElement);
+    }
+
+    setInterval(addNewTip, 3600000);
+
+    let expenseChart;
+    const expenses = {
+        labels: [],
+        data: []
+    };
+
+    function initChart() {
+        const ctx = document.getElementById('expense-chart').getContext('2d');
+        expenseChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: expenses.labels,
+                datasets: [{
+                    label: 'Расходы',
+                    data: expenses.data,
+                    borderColor: '#408945',
+                    backgroundColor: 'rgba(64, 137, 69, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Сумма (₽)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Время'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function addExpense() {
+        const amount = parseFloat(document.getElementById('expense-amount').value);
+        const description = document.getElementById('expense-description').value;
+
+        if (amount && description) {
+            const now = new Date();
+            const timeLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            expenses.labels.push(timeLabel);
+            expenses.data.push(amount);
+
+            if (!expenseChart) {
+                initChart();
+            } else {
+                expenseChart.data.labels = expenses.labels;
+                expenseChart.data.datasets[0].data = expenses.data;
+                expenseChart.update();
+            }
+
+            document.getElementById('expense-amount').value = '';
+            document.getElementById('expense-description').value = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initChart);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.account-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Button clicked:', this.textContent);
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    });
+</script>
+</body>
+</html>
