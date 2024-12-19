@@ -12,23 +12,49 @@
 </header>
 
 <main class="registration-container">
-  <%= form_with model: @user, url: users_path, local: true, id: "registration-form", onsubmit: "return validateForm(event)" do |f| %>
+  <%= form_with model: @user, url: users_path, local: true, id: "registration-form" do |f| %>
+
+    <% if @user.errors.any? %>
+  <div class="error-messages-box">
+    <h2>Упс:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message.gsub('Email ', '') %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+
+
     <div class="form-group">
       <label for="fullname">Полное имя</label>
       <%= f.text_field :full_name, id: "fullname", required: true %>
-      <div class="error-message" id="fullname-error">Пожалуйста, введите ваше полное имя</div>
+      <% if @user.errors[:full_name].any? %>
+        <div class="error-message">
+          <%= @user.errors[:full_name].join(", ") %>
+        </div>
+      <% end %>
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
       <%= f.email_field :email, id: "email", required: true %>
-      <div class="error-message" id="email-error">Пожалуйста, введите корректный email</div>
+      <% if @user.errors[:email].any? %>
+        <div class="error-message">
+          <%= @user.errors[:email].join(", ") %>
+        </div>
+      <% end %>
     </div>
 
     <div class="form-group">
       <label for="phone">Номер телефона</label>
       <%= f.telephone_field :phone, id: "phone", required: true %>
-      <div class="error-message" id="phone-error">Пожалуйста, введите корректный номер телефона</div>
+      <% if @user.errors[:phone].any? %>
+        <div class="error-message">
+          <%= @user.errors[:phone].join(", ") %>
+        </div>
+      <% end %>
     </div>
 
     <div class="form-group">
@@ -37,20 +63,27 @@
       <div class="password-requirements">
         Пароль должен содержать минимум 8 символов, включая буквы и цифры
       </div>
-      <div class="error-message" id="password-error">Пароль не соответствует требованиям</div>
+      <% if @user.errors[:password].any? %>
+        <div class="error-message">
+          <%= @user.errors[:password].join(", ") %>
+        </div>
+      <% end %>
     </div>
 
     <div class="form-group">
       <label for="confirm-password">Подтверждение пароля</label>
       <%= f.password_field :password_confirmation, id: "confirm-password", required: true %>
-      <div class="error-message" id="confirm-password-error">Пароли не совпадают</div>
+      <% if @user.errors[:password_confirmation].any? %>
+        <div class="error-message">
+          <%= @user.errors[:password_confirmation].join(", ") %>
+        </div>
+      <% end %>
     </div>
 
     <button type="submit" class="submit-button">Зарегистрироваться</button>
 
-
     <div class="login-link">
-      Уже есть аккаунт? <a>Войти</a>
+      Уже есть аккаунт? <a href="<%= login_path %>">Войти</a>
     </div>
   <% end %>
 </main>
@@ -83,68 +116,6 @@
   </div>
 </footer>
 
-<script>
-    function validateForm(event) {
-        // Ваш скрипт из HTML, адаптированный под то, что форма теперь сабмитится через Rails
-        event.preventDefault();
-
-        let isValid = true;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-
-        // Reset all error messages
-        document.querySelectorAll('.error-message').forEach(error => {
-            error.style.display = 'none';
-        });
-
-        // Validate full name
-        const fullname = document.getElementById('fullname').value;
-        if (fullname.trim().length < 2) {
-            document.getElementById('fullname-error').style.display = 'block';
-            isValid = false;
-        }
-
-        // Validate email
-        const email = document.getElementById('email').value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            document.getElementById('email-error').style.display = 'block';
-            isValid = false;
-        }
-
-        // Validate phone
-        const phone = document.getElementById('phone').value;
-        const phoneRegex = /^\+?[0-9]{10,15}$/;
-        if (!phoneRegex.test(phone)) {
-            document.getElementById('phone-error').style.display = 'block';
-            isValid = false;
-        }
-
-        // Validate password
-        if (password.length < 8 || !/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
-            document.getElementById('password-error').style.display = 'block';
-            isValid = false;
-        }
-
-        // Validate password confirmation
-        if (password !== confirmPassword) {
-            document.getElementById('confirm-password-error').style.display = 'block';
-            isValid = false;
-        }
-
-        if (isValid) {
-            // Отправляем форму, если прошла валидация
-            event.target.submit();
-        }
-
-        return false;
-    }
-
-    // Add input masking for phone number
-    document.getElementById('phone').addEventListener('input', function(e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    });
-</script>
+<%= javascript_include_tag 'registration', defer: true %>
 </body>
 </html>

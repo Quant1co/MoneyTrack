@@ -21,8 +21,9 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    # Выход из аккаунта
-    session[:user_id] = nil
-    redirect_to home_path, notice: "Вы успешно вышли из аккаунта."
+    # Завершаем сессию
+    reset_session
+    flash[:notice] = "Вы успешно вышли из системы."
+    redirect_to root_path
   end
 end

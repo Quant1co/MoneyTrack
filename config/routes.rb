@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index', as:'home'
+  root to: 'home#index'
   get 'register', to: 'users#new', as: 'register'
   post 'users', to: 'users#create', as: 'users'
 
@@ -7,5 +8,5 @@ Rails.application.routes.draw do
 
   get 'login', to: 'sessions#new', as: 'login'
   post 'login', to: 'sessions#create'
-  delete 'logout', to: 'sessions#destroy', as: 'logout'
+  get '/logout', to: 'sessions#destroy'
 end

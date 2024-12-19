@@ -1,0 +1,13 @@
+ru:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "Кажется, этот адрес электронной почты уже используется"
+  errors:
+    template:
+      header:
+        one: "Упс:"
+        other: "Упс:"

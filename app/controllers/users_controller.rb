@@ -8,13 +8,12 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # После успешной регистрации перенаправляем на страницу входа
       redirect_to login_path, notice: "Регистрация успешно завершена!"
     else
-      # Если валидации не прошли, отобразим форму заново с ошибками
       render :new, status: :unprocessable_entity
     end
   end
+
 
   private
 
