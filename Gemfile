@@ -71,4 +71,6 @@ group :test do
 
   gem 'bcrypt', '~> 3.1.7'
 
+  gem 'nokogiri'
+  gem 'httparty'
 end

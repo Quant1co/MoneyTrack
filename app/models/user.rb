@@ -6,4 +6,3 @@ class User < ApplicationRecord
   validates :phone, presence: true
   validates :password, length: { minimum: 8 }, format: { with: /\A(?=.*[0-9])(?=.*[A-Za-z]).+\z/, message: "должен содержать буквы и цифры" }
 end
-

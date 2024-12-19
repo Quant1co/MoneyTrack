@@ -73,6 +73,7 @@ body {
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
+    overflow-y: auto;
 }
 
 .card:hover {
@@ -86,6 +87,21 @@ body {
     padding-bottom: 10px;
 }
 
+.advice-list {
+    max-height: 300px; /* Установите высоту контейнера */
+    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    margin-top: 16px;
+    padding-right: 8px; /* Немного отступа для удобства */
+}
+
+.stock-list{
+    overflow-y: auto;
+    max-height: 300px; /* Установите высоту контейнера */
+    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    margin-top: 16px;
+    padding-right: 8px;
+}
+
 .tip {
     background: #f0f7f7;
     padding: 15px;
@@ -95,10 +111,10 @@ body {
 }
 
 .currency-item, .stock-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #e8f4f4;
+    max-height: 300px; /* Установите высоту контейнера */
+    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    margin-top: 16px;
+    padding-right: 8px;
 }
 
 .up {
