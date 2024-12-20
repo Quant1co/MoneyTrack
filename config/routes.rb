@@ -14,4 +14,9 @@ Rails.application.routes.draw do
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
   get 'stocks/data', to: 'stocks#data', as: 'stocks_data'
+
+  resource :saving, only: [:show, :update] do
+    post 'deposit', on: :member
+    post 'withdraw', on: :member
+  end
 end

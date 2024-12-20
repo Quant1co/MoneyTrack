@@ -19,7 +19,7 @@
 <section class="finance-section">
   <div class="account-card">
     <h2>Копилка</h2>
-    <div class="balance">75,000 ₽</div>
+    <div class="balance"></div>
     <div class="account-info">
       <p>Цель: 100,000 ₽</p>
       <div class="progress-bar">
@@ -67,29 +67,29 @@
   <div class="card">
     <h2>Финансовые советы</h2>
     <div class="advice-list">
-      <%# @arr_advices.each do |advice| %>
-<!--        <div class="tip">-->
-<!--          <h3>💡 Полезный совет</h3>-->
-<!--          <p><%#= advice.content %></p>-->
-<!--        </div>-->
-      <%# end %>
+      <% @arr_advices.each do |advice| %>
+        <div class="tip">
+          <h3>💡 Полезный совет</h3>
+          <p><%= advice.content %></p>
+        </div>
+      <% end %>
     </div>
   </div>
 
   <div class="card">
     <h2>Курсы валют</h2>
-<!--    <div class="currency-item">-->
-<!--      <span>USD/RUB</span>-->
-<!--      <span > <%#= $rates[:USD] %> </span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>EUR/USD</span>-->
-<!--      <span><%#= $rates[:EUR] %></span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>CNY/USD</span>-->
-<!--      <span><%#= $rates[:CNY] %></span>-->
-<!--    </div>-->
+    <div class="currency-item">
+      <span>USD/RUB</span>
+      <span > <%= $rates[:USD] %> </span>
+    </div>
+    <div class="currency-item">
+      <span>EUR/USD</span>
+      <span><%= $rates[:EUR] %></span>
+    </div>
+    <div class="currency-item">
+      <span>CNY/USD</span>
+      <span><%= $rates[:CNY] %></span>
+    </div>
   </div>
 
   <div class="card">
