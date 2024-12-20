@@ -1,14 +1,16 @@
-<html><head>
+<html>
+<head>
   <meta charset="UTF-8">
   <title>MoneyTrack - Управление финансами</title>
   <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
   <%= stylesheet_link_tag 'loginindex', media: 'all' %>
 </head>
 <body>
 <header class="header">
   <div class="auth-buttons">
     <a class="auth-button profile-btn">Мой профиль</a>
-    <%= link_to "Выйти", logout_path, method: :delete, class: "auth-button logout-btn" %>
+    <%= link_to "Выйти", logout_path, method: :get, class: "auth-button logout-btn" %>
   </div>
   <h1>MoneyTrack</h1>
   <p>Ваш личный финансовый помощник</p>
@@ -59,17 +61,13 @@
 <div class="container">
   <div class="card">
     <h2>Финансовые советы</h2>
-    <div class="tip">
-      <h3>🎯 Правило 50/30/20</h3>
-      <p>50% дохода на необходимые расходы, 30% на желания, 20% на сбережения</p>
-    </div>
-    <div class="tip">
-      <h3>💰 Подушка безопасности</h3>
-      <p>Создайте запас денег на 3-6 месяцев жизни</p>
-    </div>
-    <div class="tip">
-      <h3>📈 Инвестиции</h3>
-      <p>Начните инвестировать даже небольшие суммы регулярно</p>
+    <div class="advice-list">
+      <% @arr_advices.each do |advice| %>
+        <div class="tip">
+          <h3>💡 Полезный совет</h3>
+          <p><%= advice.content %></p>
+        </div>
+      <% end %>
     </div>
   </div>
 
@@ -77,31 +75,34 @@
     <h2>Курсы валют</h2>
     <div class="currency-item">
       <span>USD/RUB</span>
-      <span class="up">91.45 ₽ (+0.2%)</span>
+      <span > <%= $rates[:USD] %> </span>
     </div>
     <div class="currency-item">
-      <span>EUR/RUB</span>
-      <span class="down">98.32 ₽ (-0.1%)</span>
+      <span>EUR/USD</span>
+      <span><%= $rates[:EUR] %></span>
     </div>
     <div class="currency-item">
-      <span>CNY/RUB</span>
-      <span class="up">12.67 ₽ (+0.3%)</span>
+      <span>CNY/USD</span>
+      <span><%= $rates[:CNY] %></span>
     </div>
   </div>
 
   <div class="card">
     <h2>Популярные акции</h2>
-    <div class="stock-item">
-      <span>Сбербанк</span>
-      <span class="up">270.45 ₽ (+1.2%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Газпром</span>
-      <span class="down">165.32 ₽ (-0.5%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Яндекс</span>
-      <span class="up">2750.80 ₽ (+2.1%)</span>
+    <div class="stock-list">
+      <% $stocks.each do |stock| %>
+        <div class="stock-item">
+          <span><%= stock[:ticker] %></span>
+          <span><%= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>
+          <% if session[:user_id] %>
+            <% if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+              <button class="fav-btn active" data-ticker="<%= stock[:ticker] %>">★</button>
+            <% else %>
+              <button class="fav-btn" data-ticker="<%= stock[:ticker] %>">☆</button>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -134,4 +135,163 @@
   </div>
 </footer>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const favoriteButtons = document.querySelectorAll('.fav-btn');
+
+        favoriteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const stockTicker = this.dataset.ticker;
+                const isActive = this.classList.contains('active');
+
+                toggleFavorite(this, stockTicker, isActive);
+            });
+        });
+    });
+
+    function toggleFavorite(button, stockTicker, isActive) {
+        if (!isActive) {
+            // Добавление в избранное
+            addFavorite(button, stockTicker);
+        } else {
+            // Удаление из избранного
+            removeFavorite(button, stockTicker);
+        }
+    }
+
+    function addFavorite(button, stockTicker) {
+        fetch('/logined', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCSRFToken()
+            },
+            body: JSON.stringify({ ticker: stockTicker })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Успешно добавлено в избранное
+                    button.classList.add('active');
+                    button.textContent = '★';
+                    showNotification(`${stockTicker} добавлена в избранное`, 'success');
+                    updateLocalStorage(stockTicker, 'add');
+                } else {
+                    // Ошибка при добавлении
+                    showNotification(`Ошибка: ${data.errors.join(', ')}`, 'error');
+                    // Отменяем изменение состояния кнопки
+                    button.classList.remove('active');
+                    button.textContent = '☆';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при добавлении в избранное:', error);
+                showNotification('Произошла ошибка при добавлении в избранное.', 'error');
+                // Отменяем изменение состояния кнопки
+                button.classList.remove('active');
+                button.textContent = '☆';
+            });
+    }
+
+    function removeFavorite(button, stockTicker) {
+        // Отправляем DELETE-запрос с параметром ticker
+        const url = `/logined?ticker=${encodeURIComponent(stockTicker)}`;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCSRFToken()
+            }
+            // Тело запроса не требуется для DELETE
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Успешно удалено из избранного
+                    button.classList.remove('active');
+                    button.textContent = '☆';
+                    showNotification(`${stockTicker} удалена из избранного`, 'info');
+                    updateLocalStorage(stockTicker, 'remove');
+                } else {
+                    // Ошибка при удалении
+                    showNotification(`Ошибка: ${data.message}`, 'error');
+                    // Отменяем изменение состояния кнопки
+                    button.classList.add('active');
+                    button.textContent = '★';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при удалении из избранного:', error);
+                showNotification('Произошла ошибка при удалении из избранного.', 'error');
+                // Отменяем изменение состояния кнопки
+                button.classList.add('active');
+                button.textContent = '★';
+            });
+    }
+
+    function getCSRFToken() {
+        const tokenElement = document.querySelector('meta[name="csrf-token"]');
+        return tokenElement ? tokenElement.getAttribute('content') : '';
+    }
+
+
+    function updateLocalStorage(stockTicker, action) {
+        let favorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+
+        if (action === 'add') {
+            if (!favorites.includes(stockTicker)) {
+                favorites.push(stockTicker);
+            }
+        } else if (action === 'remove') {
+            favorites = favorites.filter(stock => stock !== stockTicker);
+        }
+
+        localStorage.setItem('favoriteStocks', JSON.stringify(favorites));
+    }
+
+
+    function showNotification(message) {
+        // Check if notification container exists
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        `;
+            document.body.appendChild(container);
+        }
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+        background: #2c5530;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease-out;
+    `;
+        notification.textContent = message;
+
+        // Add to container
+        container.appendChild(notification);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                container.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+</script>
+
 </html>
