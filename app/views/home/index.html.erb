@@ -19,18 +19,10 @@
 <section class="finance-section">
   <div class="account-card">
     <h2>Копилка</h2>
-    <div class="balance">75,000 ₽</div>
     <div class="account-info">
-      <p>Цель: 100,000 ₽</p>
-      <div class="progress-bar">
-        <div class="progress"></div>
-      </div>
-      <p>Прогресс: 75%</p>
+      <p>Зарегистрируйтесь или войдите чтобы начать копить</p>
     </div>
-    <div class="account-info">
-      <p>Ежемесячный взнос: 5,000 ₽</p>
-    </div>
-    <button class="account-button">Добавить</button>
+    <button class="account-button">Начать копить</button>
   </div>
 
   <div class="expense-tracker">
@@ -45,18 +37,11 @@
 
   <div class="account-card">
     <h2>Основной счет</h2>
-    <div class="balance">150,000 ₽</div>
     <div class="account-info">
-      <p>Доступно: 145,000 ₽</p>
-      <p>Заблокировано: 5,000 ₽</p>
+      <p>Зарегистрируйтесь или войдите чтобы открыть счет</p>
     </div>
-    <div class="account-info">
-      <p>Последние операции:</p>
-      <p>Продукты -2,500 ₽</p>
-      <p>Кафе -800 ₽</p>
-      <p>Транспорт -100 ₽</p>
-    </div>
-    <button class="account-button">Пополнить</button>
+<!--    <button class="account-button">Открыть счет</button>-->
+    <%= link_to "Открыть счет", login_path, class: "account-button" %>
   </div>
 </section>
 
@@ -90,24 +75,34 @@
     </div>
   </div>
 
+
+
   <div class="card">
     <h2>Популярные акции</h2>
+
     <div class="stock-list">
-      <% $stocks.each do |stock| %>
-        <div class="stock-item">
-          <span><%= stock[:ticker] %></span>
-          <span><%= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>
-          <% if session[:user_id] %>
-            <% if current_user.favorites.exists?(ticker: stock[:ticker]) %>
-              <button class="fav-btn active" data-ticker="<%= stock[:ticker] %>">★</button>
-            <% else %>
-              <button class="fav-btn" data-ticker="<%= stock[:ticker] %>">☆</button>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
+
     </div>
   </div>
+
+<!--  <div class="card">-->
+<!--    <h2>Популярные акции</h2>-->
+<!--    <div class="stock-list">-->
+      <%# $stocks.each do |stock| %>
+<!--        <div class="stock-item">-->
+<!--          <span><%#= stock[:ticker] %></span>-->
+<!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
+          <%# if session[:user_id] %>
+            <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+<!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
+            <%# else %>
+<!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
+            <%# end %>
+          <%# end %>
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
+<!--  </div>-->
 </div>>
 
 
@@ -140,171 +135,231 @@
 </footer>
 
 <script>
-
-    // Обработчики событий для карточек
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function() {
-            this.style.transform = 'scale(1.02)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 200);
-        });
-    });
+    // async function loadStocks() {
+    //     try {
+    //         const response = await fetch('/stocks/data');  // Замените на реальный путь к API
+    //         const stocks = await response.json();
+    //
+    //         const stockList = document.getElementById('stock-list');
+    //         stockList.innerHTML = ''; // Очистить контейнер перед вставкой
+    //
+    //         stocks.forEach(stock => {
+    //             const stockItem = document.createElement('div');
+    //             stockItem.classList.add('stock-item');
+    //
+    //             // Добавление информации о тикере и цене
+    //             stockItem.innerHTML = `
+    //       <span>${stock.ticker}</span>
+    //       <span>${stock.price.toFixed(2)} $</span>
+    //     `;
+    //
+    //             // Добавление кнопки для избранных акций (если пользователь залогинен)
+    //             if (userLoggedIn) {  // Проверка, если пользователь залогинен
+    //                 const button = document.createElement('button');
+    //                 button.classList.add('fav-btn');
+    //                 button.dataset.ticker = stock.ticker;
+    //
+    //                 // Проверка, если акция в избранных
+    //                 if (stock.isFavorite) {
+    //                     button.classList.add('active');
+    //                     button.textContent = '★';
+    //                 } else {
+    //                     button.textContent = '☆';
+    //                 }
+    //
+    //                 stockItem.appendChild(button);
+    //             }
+    //
+    //             // Вставка нового элемента в список
+    //             stockList.appendChild(stockItem);
+    //         });
+    //     } catch (error) {
+    //         console.error('Ошибка при загрузке акций:', error);
+    //     }
+    // }
+    //
+    // // Вызов функции загрузки акций при загрузке страницы
+    // window.onload = loadStocks;
+    //app/javascript/packs/favorites.js
 
     document.addEventListener('DOMContentLoaded', () => {
-        const favoriteButtons = document.querySelectorAll('.fav-btn');
+        const stockListContainer = document.querySelector('.stock-list'); // Контейнер для списка акций
 
-        favoriteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const stockTicker = this.dataset.ticker;
-                const isActive = this.classList.contains('active');
 
-                toggleFavorite(this, stockTicker, isActive);
+        // Функция для загрузки акций
+        function loadStocks() {
+            fetch('/stocks/data', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-Token': getCSRFToken()
+                }
+            })
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Сетевая ошибка');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  renderStocks(data);
+              })
+              .catch(error => {
+                  console.error('Ошибка при загрузке акций:', error);
+                  showNotification('Произошла ошибка при загрузке акций.', 'error');
+              });
+        }
+
+        // Функция для рендеринга акций в DOM
+        function renderStocks(stocks) {
+            stockListContainer.innerHTML = ''; // Очищаем текущий список
+
+            stocks.forEach(stock => {
+                const stockItem = document.createElement('div');
+                stockItem.classList.add('stock-item');
+
+                // Создаём элемент для тикера
+                const tickerSpan = document.createElement('span');
+                tickerSpan.textContent = stock.ticker;
+
+                // Создаём элемент для цены
+                const priceSpan = document.createElement('span');
+                priceSpan.textContent = `$${parseFloat(stock.price).toFixed(2)}`;
+
+                // Создаём кнопку избранного
+                // if (window.userLoggedIn === 'true') {
+                //     console.log('Пользователь залогинен');
+                //     const favButton = document.createElement('button');
+                //     favButton.classList.add('fav-btn');
+                //     favButton.dataset.ticker = stock.ticker;
+                //     favButton.textContent = '☆'; // По умолчанию не в избранном
+                // }
+
+
+                // Проверяем, находится ли акция в избранном (можно передать список избранных акций из сервера)
+
+                // Вставляем элементы в stock-item
+                stockItem.appendChild(tickerSpan);
+                stockItem.appendChild(priceSpan);
+                //stockItem.appendChild(favButton);
+
+                // Вставляем stock-item в stock-list
+                stockListContainer.appendChild(stockItem);
             });
-        });
+        }
+
+        // Функция для переключения избранного
+        function toggleFavorite(button, stockTicker, isActive) {
+            if (!isActive) {
+                // Добавление в избранное
+                addFavorite(button, stockTicker);
+            } else {
+                // Удаление из избранного
+                removeFavorite(button, stockTicker);
+            }
+        }
+
+        // Функция для добавления акции в избранное
+        function addFavorite(button, stockTicker) {
+            fetch('/logined', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCSRFToken()
+                },
+                body: JSON.stringify({ ticker: stockTicker })
+            })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      button.classList.add('active');
+                      button.textContent = '★';
+                      showNotification(`${stockTicker} добавлена в избранное`, 'success');
+                      updateLocalStorage(stockTicker, 'add');
+                  } else {
+                      showNotification(`Ошибка: ${data.errors.join(', ')}`, 'error');
+                      // Отменяем изменение состояния кнопки
+                      button.classList.remove('active');
+                      button.textContent = '☆';
+                  }
+              })
+              .catch(error => {
+                  console.error('Ошибка при добавлении в избранное:', error);
+                  showNotification('Произошла ошибка при добавлении в избранное.', 'error');
+                  // Отменяем изменение состояния кнопки
+                  button.classList.remove('active');
+                  button.textContent = '☆';
+              });
+        }
+
+        // Функция для удаления акции из избранного
+        function removeFavorite(button, stockTicker) {
+            fetch(`/logined?ticker=${encodeURIComponent(stockTicker)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': getCSRFToken()
+                }
+                // Тело запроса не требуется для DELETE
+            })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      button.classList.remove('active');
+                      button.textContent = '☆';
+                      showNotification(`${stockTicker} удалена из избранного`, 'info');
+                      updateLocalStorage(stockTicker, 'remove');
+                  } else {
+                      showNotification(`Ошибка: ${data.message}`, 'error');
+                      // Отменяем изменение состояния кнопки
+                      button.classList.add('active');
+                      button.textContent = '★';
+                  }
+              })
+              .catch(error => {
+                  console.error('Ошибка при удалении из избранного:', error);
+                  showNotification('Произошла ошибка при удалении из избранного.', 'error');
+                  // Отменяем изменение состояния кнопки
+                  button.classList.add('active');
+                  button.textContent = '★';
+              });
+        }
+
+        // Функция для получения CSRF-токена
+        function getCSRFToken() {
+            const tokenElement = document.querySelector('meta[name="csrf-token"]');
+            return tokenElement ? tokenElement.getAttribute('content') : '';
+        }
+
+        // Функция для отображения уведомлений
+        function showNotification(message, type = 'info') {
+            // Реализуйте свою логику уведомлений
+            // Например, используя alert:
+            alert(message);
+            // Или используя библиотеку уведомлений, например Toastr:
+            // toastr[type](message);
+        }
+
+        // Функция для обновления localStorage
+        function updateLocalStorage(stockTicker, action) {
+            let favorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+
+            if (action === 'add') {
+                if (!favorites.includes(stockTicker)) {
+                    favorites.push(stockTicker);
+                }
+            } else if (action === 'remove') {
+                favorites = favorites.filter(stock => stock !== stockTicker);
+            }
+
+            localStorage.setItem('favoriteStocks', JSON.stringify(favorites));
+        }
+
+        // Получение текущих избранных акций из localStorage
+        const currentFavorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+
+        loadStocks()
     });
 
-    function toggleFavorite(button, stockTicker, isActive) {
-        if (!isActive) {
-            // Добавление в избранное
-            addFavorite(button, stockTicker);
-        } else {
-            // Удаление из избранного
-            removeFavorite(button, stockTicker);
-        }
-    }
-
-    function addFavorite(button, stockTicker) {
-        fetch('/logined', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCSRFToken()
-            },
-            body: JSON.stringify({ ticker: stockTicker })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Успешно добавлено в избранное
-                    button.classList.add('active');
-                    button.textContent = '★';
-                    showNotification(`${stockTicker} добавлена в избранное`, 'success');
-                    updateLocalStorage(stockTicker, 'add');
-                } else {
-                    // Ошибка при добавлении
-                    showNotification(`Ошибка: ${data.errors.join(', ')}`, 'error');
-                    // Отменяем изменение состояния кнопки
-                    button.classList.remove('active');
-                    button.textContent = '☆';
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при добавлении в избранное:', error);
-                showNotification('Произошла ошибка при добавлении в избранное.', 'error');
-                // Отменяем изменение состояния кнопки
-                button.classList.remove('active');
-                button.textContent = '☆';
-            });
-    }
-
-    function removeFavorite(button, stockTicker) {
-        // Отправляем DELETE-запрос с параметром ticker
-        const url = `/logined?ticker=${encodeURIComponent(stockTicker)}`;
-
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCSRFToken()
-            }
-            // Тело запроса не требуется для DELETE
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Успешно удалено из избранного
-                    button.classList.remove('active');
-                    button.textContent = '☆';
-                    showNotification(`${stockTicker} удалена из избранного`, 'info');
-                    updateLocalStorage(stockTicker, 'remove');
-                } else {
-                    // Ошибка при удалении
-                    showNotification(`Ошибка: ${data.message}`, 'error');
-                    // Отменяем изменение состояния кнопки
-                    button.classList.add('active');
-                    button.textContent = '★';
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при удалении из избранного:', error);
-                showNotification('Произошла ошибка при удалении из избранного.', 'error');
-                // Отменяем изменение состояния кнопки
-                button.classList.add('active');
-                button.textContent = '★';
-            });
-    }
-
-    function getCSRFToken() {
-        const tokenElement = document.querySelector('meta[name="csrf-token"]');
-        return tokenElement ? tokenElement.getAttribute('content') : '';
-    }
-
-
-    function updateLocalStorage(stockTicker, action) {
-        let favorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
-
-        if (action === 'add') {
-            if (!favorites.includes(stockTicker)) {
-                favorites.push(stockTicker);
-            }
-        } else if (action === 'remove') {
-            favorites = favorites.filter(stock => stock !== stockTicker);
-        }
-
-        localStorage.setItem('favoriteStocks', JSON.stringify(favorites));
-    }
-
-
-    function showNotification(message) {
-        // Check if notification container exists
-        let container = document.getElementById('notification-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.id = 'notification-container';
-            container.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        `;
-            document.body.appendChild(container);
-        }
-
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-        background: #2c5530;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 5px;
-        margin-top: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        animation: slideIn 0.3s ease-out;
-    `;
-        notification.textContent = message;
-
-        // Add to container
-        container.appendChild(notification);
-
-        // Remove after 3 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease-out';
-            setTimeout(() => {
-                container.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }
 </script>
 </body>
 </html>

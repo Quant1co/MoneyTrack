@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index', as:'home'
+
   get 'register', to: 'users#new', as: 'register'
   post 'users', to: 'users#create', as: 'users'
 
@@ -11,4 +12,6 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
 
   get 'logout', to: 'sessions#destroy', as: 'logout'
+
+  get 'stocks/data', to: 'stocks#data', as: 'stocks_data'
 end

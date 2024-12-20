@@ -138,6 +138,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        console.log("event")
         const favoriteButtons = document.querySelectorAll('.fav-btn');
 
         favoriteButtons.forEach(button => {
@@ -151,6 +152,8 @@
     });
 
     function toggleFavorite(button, stockTicker, isActive) {
+        console.log("toggle")
+        console.log(isActive)
         if (!isActive) {
             // Добавление в избранное
             addFavorite(button, stockTicker);
@@ -161,6 +164,7 @@
     }
 
     function addFavorite(button, stockTicker) {
+        console.log("ошибка");
         fetch('/logined', {
             method: 'POST',
             headers: {

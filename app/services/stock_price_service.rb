@@ -10,16 +10,15 @@ class StockPriceService
     @api_key = api_key
   end
 
-  # def get_popular_tickers(limit = 10)
-  #   # Получаем список самых популярных тикеров
-  #   url = URI("#{BASE_URL}stock/symbol?exchange=US&token=#{@api_key}")
-  #   response = Net::HTTP.get(url)
-  #   data = JSON.parse(response)
-  #   data.first(limit).map { |stock| stock["symbol"] }
-  # rescue StandardError => e
-  #   Rails.logger.error "Error fetching tickers: #{e.message}"
-  #   []
-  # end
+  def get_popular_tickers(limit = 10)
+    url = URI("#{BASE_URL}stock/symbol?exchange=US&token=#{@api_key}")
+    response = Net::HTTP.get(url)
+    data = JSON.parse(response)
+    data.first(limit).map { |stock| stock["symbol"] }
+  rescue StandardError => e
+    Rails.logger.error "Error fetching tickers: #{e.message}"
+    []
+  end
 
   def fetch_price(ticker)
     # Получаем текущую цену для тикера

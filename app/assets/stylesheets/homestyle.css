@@ -88,16 +88,16 @@ body {
 }
 
 .advice-list {
-    max-height: 300px; /* Установите высоту контейнера */
-    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: 16px;
-    padding-right: 8px; /* Немного отступа для удобства */
+    padding-right: 8px;
 }
 
 .stock-list{
     overflow-y: auto;
-    max-height: 300px; /* Установите высоту контейнера */
-    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: 16px;
     padding-right: 8px;
 }
@@ -111,19 +111,12 @@ body {
 }
 
 .currency-item, .stock-item {
-    max-height: 300px; /* Установите высоту контейнера */
-    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    max-height: 300px;
+    overflow-y: auto;
     margin-top: 16px;
     padding-right: 8px;
 }
 
-.up {
-    color: #40b3a2;
-}
-
-.down {
-    color: #e76f51;
-}
 
 @keyframes pulse {
     0% { transform: scale(1); }
