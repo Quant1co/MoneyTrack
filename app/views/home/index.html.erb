@@ -30,7 +30,11 @@
     <div class="account-info">
       <p>Ежемесячный взнос: 5,000 ₽</p>
     </div>
-    <button class="account-button">Добавить</button>
+    <% if current_user %>
+      <%= link_to 'Войти в копилку',saving_path(current_user.saving), class: 'account-button goal-btn' %>
+    <% else %>
+      <%= link_to 'Войти в копилку', login_path, class: 'account-button goal-btn' %>
+    <% end %>
   </div>
 
   <div class="expense-tracker">
@@ -64,49 +68,49 @@
   <div class="card">
     <h2>Финансовые советы</h2>
     <div class="advice-list">
-      <% $arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
-        </div>
-      <% end %>
+      <%# $arr_advices.each do |advice| %>
+<!--        <div class="tip">-->
+<!--          <h3>💡 Полезный совет</h3>-->
+<!--          <p><%#= advice.content %></p>-->
+<!--        </div>-->
+      <%# end %>
     </div>
   </div>
 
 
   <div class="card">
     <h2>Курсы валют</h2>
-    <div class="currency-item">
-      <span>USD/RUB</span>
-      <span > <%= $rates[:USD] %> </span>
-    </div>
-    <div class="currency-item">
-      <span>EUR/USD</span>
-      <span><%= $rates[:EUR] %></span>
-    </div>
-    <div class="currency-item">
-      <span>CNY/USD</span>
-      <span><%= $rates[:CNY] %></span>
-    </div>
+<!--    <div class="currency-item">-->
+<!--      <span>USD/RUB</span>-->
+<!--      <span > <%#= $rates[:USD] %> </span>-->
+<!--    </div>-->
+<!--    <div class="currency-item">-->
+<!--      <span>EUR/USD</span>-->
+<!--      <span><%#= $rates[:EUR] %></span>-->
+<!--    </div>-->
+<!--    <div class="currency-item">-->
+<!--      <span>CNY/USD</span>-->
+<!--      <span><%#= $rates[:CNY] %></span>-->
+<!--    </div>-->
   </div>
 
   <div class="card">
     <h2>Популярные акции</h2>
-    <div class="stock-list">
-      <% $stocks.each do |stock| %>
-        <div class="stock-item">
-          <span><%= stock[:ticker] %></span>
-          <span><%= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>
-          <% if session[:user_id] %>
-            <% if current_user.favorites.exists?(ticker: stock[:ticker]) %>
-              <button class="fav-btn active" data-ticker="<%= stock[:ticker] %>">★</button>
-            <% else %>
-              <button class="fav-btn" data-ticker="<%= stock[:ticker] %>">☆</button>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
+<!--    <div class="stock-list">-->
+      <%# $stocks.each do |stock| %>
+<!--        <div class="stock-item">-->
+<!--          <span><%#= stock[:ticker] %></span>-->
+<!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
+          <%# if session[:user_id] %>
+            <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+<!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
+            <%# else %>
+<!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
+            <%# end %>
+          <%# end %>
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
   </div>
 </div>>
 
