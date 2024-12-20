@@ -2,6 +2,11 @@
 
 class HomeController < ApplicationController
   def index
+
+    if current_user
+      redirect_to logined_path
+    end
+
     advice_data = DataParserJob.new('https://journal.tinkoff.ru/flows/fin-advice/')
     advice_data.parse_advices
     advice = ParserToDb.new(advice_data.advices)
