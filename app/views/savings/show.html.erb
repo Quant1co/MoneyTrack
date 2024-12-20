@@ -1,0 +1,83 @@
+<html><head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Копилка</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'saving', media: 'all' %>
+</head>
+<body>
+<header class="header">
+  <h1>MoneyTrack</h1>
+  <p>Копилка</p>
+</header>
+  <h1><%= @saving.title || "Новая копилка" %></h1>
+  <h2><%= @saving.target_amount || 0%></h2>
+  <%= form_with model: @saving, local: true do |form| %>
+    <div>
+      <%= form.label :title, "Название цели" %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div>
+      <%= form.label :target_amount, "Сумма сбора" %>
+      <%= form.number_field :target_amount %>
+    </div>
+
+    <div>
+      <%= form.submit "Сохранить" %>
+    </div>
+  <% end %>
+
+  <h3>Текущий баланс: <%= @saving.current_balance %> ₽</h3>
+
+  <%= form_with url: deposit_saving_path(@saving), method: :post, local: true do |form| %>
+    <div>
+      <%= form.label :amount, "Сумма для пополнения" %>
+      <%= form.number_field :amount %>
+      <%= form.submit "Пополнить" %>
+    </div>
+  <% end %>
+
+  <%= form_with url: withdraw_saving_path(@saving), method: :post, local: true do |form| %>
+    <div>
+      <%= form.label :amount, "Сумма для снятия" %>
+      <%= form.number_field :amount %>
+      <%= form.submit "Снять" %>
+    </div>
+  <% end %>
+</body>
+</html>
+
+
+
+
+<!--<div class="savings-progress">-->
+<!--  <div class="savings-goal-title">Новый iPhone 15 Pro</div>-->
+<!--  <div class="big-progress-bar">-->
+<!--    <div class="big-progress"></div>-->
+<!--    <div class="progress-text">75%</div>-->
+<!--  </div>-->
+<!--  <div class="current-amount">75,000 ₽</div>-->
+<!--  <div class="savings-goal">Цель: 100,000 ₽</div>-->
+<!--</div>-->
+
+<!--<div class="savings-actions">-->
+<!--  <div class="savings-card">-->
+<!--    <h2>Управление копилкой</h2>-->
+<!--    <input type="number" class="savings-input" placeholder="Сумма" min="0">-->
+<!--    <div class="action-buttons">-->
+<!--      <button class="savings-btn add-btn" onclick="addToSavings()">Добавить</button>-->
+<!--      <button class="savings-btn withdraw-btn" onclick="withdrawFromSavings()">Снять</button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="savings-card">-->
+<!--    <h2>Изменить цель</h2>-->
+<!--    <input type="text" class="savings-input" placeholder="На что копим" id="goalTitle">-->
+<!--    <input type="number" class="savings-input" placeholder="Сумма цели" id="goalAmount" min="0">-->
+<!--    <div class="action-buttons">-->
+<!--      <button class="savings-btn add-btn" onclick="updateGoal()">Обновить цель</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
