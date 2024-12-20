@@ -14,6 +14,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_20_152052) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "advices", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.string "ticker"
     t.decimal "price"
@@ -25,9 +31,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_20_152052) do
 
   create_table "savings", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "title"
-    t.decimal "target_amount", precision: 10, scale: 2
-    t.decimal "current_balance", precision: 10, scale: 2
+    t.string "title", null: false
+    t.decimal "target_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "current_balance", precision: 10, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_savings_on_user_id"

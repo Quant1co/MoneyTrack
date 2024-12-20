@@ -12,10 +12,10 @@ Rails.application.routes.draw do
 
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
-    resource :saving, only: [:show, :update] do
-      post 'deposit', on: :member
-      post 'withdraw', on: :member
-    end
+  resource :saving, only: [:show, :update] do
+    post 'deposit', on: :member
+    post 'withdraw', on: :member
+  end
 
 end
 
