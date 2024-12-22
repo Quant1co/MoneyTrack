@@ -1,0 +1,86 @@
+<html><head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Копилка</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'saving', media: 'all' %>
+</head>
+<body>
+<header class="header">
+  <div class="auth-buttons">
+    <a class="auth-button profile-btn">Мой профиль</a>
+    <%= link_to "Выйти из копилки", logined_path, method: :get, class: "auth-button logout-btn" %>
+<!--    <a class="auth-button logout-btn">Выйти</a>-->
+  </div>
+  <h1>MoneyTrack</h1>
+  <p>Копилка</p>
+</header>
+    <div class="savings-progress">
+      <div class="savings-goal-title"><h1><%= $saving.title || "Новая копилка" %></h1></div>
+      <div class="current-amount"><%= $saving.current_balance %></div>
+      <div class="savings-goal"><%= $saving.target_amount || 0%></div>
+    </div>
+
+    <div class="savings-actions">
+
+      <div class="savings-card">
+        <h2>Управление копилкой</h2>
+        <div class="action-buttons">
+          <%= form_with url: deposit_saving_path($saving), method: :post, local: true do |form| %>
+            <%= form.number_field :amount, class:"savings-input"%>
+            <%= form.submit "Пополнить", class:"savings-btn add-btn" %>
+          <% end %>
+          <%= form_with url: withdraw_saving_path($saving), method: :post, local: true do |form| %>
+            <div>
+              <%= form.number_field :amount, class:"savings-input" %>
+              <%= form.submit "Снять", class:"savings-btn withdraw-btn" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div class="savings-card">
+        <h2>Изменить цель</h2>
+        <%= form_with model: $saving, local: true do |form| %>
+          <div >
+            <%= form.text_field :title, class:"savings-input" %>
+          </div>
+          <%= form.number_field :target_amount, class:"savings-input" %>
+          <div class="action-buttons">
+            <div>
+              <%= form.submit "Сохранить", class:"savings-btn add-btn"%>
+            </div>
+            <% end %>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+<!--  <h3>Текущий баланс: <%#= @saving.current_balance %> ₽</h3>-->
+
+
+<!--    <div>-->
+
+<!--    </div>-->
+  <%# end %>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

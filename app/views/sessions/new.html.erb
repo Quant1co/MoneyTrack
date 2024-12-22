@@ -1,0 +1,43 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Вход</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'registration', media: 'all' %>
+</head>
+<body>
+<header class="header">
+  <h1>MoneyTrack</h1>
+  <p>Вход в личный кабинет</p>
+</header>
+
+<div class="login-container">
+  <h2>Вход</h2>
+  <% if flash[:alert] %>
+    <div class="error-message" id="error-message">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+  <%= form_with url: login_path, local: true do |f| %>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <%= f.email_field :email, id: "email", required: true %>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль</label>
+      <%= f.password_field :password, id: "password", required: true %>
+    </div>
+    <button type="submit" class="submit-btn">Войти</button>
+  <% end %>
+
+  <div class="additional-links">
+    <%= link_to "Регистрация", register_path, class: "auth-button register-btn" %>
+  </div>
+  <%= link_to "Вернуться на главную", home_path, class: "back-to-main" %>
+</div>
+
+<footer class="footer">
+  <p>© 2024 MoneyTrack. Все права защищены.</p>
+</footer>
+</body>
+</html>
