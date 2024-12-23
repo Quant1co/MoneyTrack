@@ -21,14 +21,13 @@
     <h2>Копилка</h2>
     <div class="balance"></div>
     <div class="account-info">
-      <p>Цель: 100,000 ₽</p>
+      <p>Баланс: <%= $saving.current_balance %></p>
+      <p>Название цели: <%= $saving.title || "Новая копилка" %></p>
+      <p>Цель сбора: <%= $saving.target_amount%></p>
       <div class="progress-bar">
-        <div class="progress"></div>
+        <div class="progress" style="width: <%= ($saving.current_balance / $saving.target_amount * 100)%>%"></div>
       </div>
-      <p>Прогресс: 75%</p>
-    </div>
-    <div class="account-info">
-      <p>Ежемесячный взнос: 5,000 ₽</p>
+      <p>Прогресс: <%= ($saving.current_balance / $saving.target_amount * 100).round %>%</p>
     </div>
       <%= link_to 'Войти в копилку', saving_path, class: 'account-button goal-btn' %>
   </div>

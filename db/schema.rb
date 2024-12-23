@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_20_152052) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_23_145851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -31,9 +31,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_20_152052) do
 
   create_table "savings", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "title", null: false
-    t.decimal "target_amount", precision: 10, scale: 2, default: "0.0", null: false
-    t.decimal "current_balance", precision: 10, scale: 2, default: "0.0", null: false
+    t.string "title"
+    t.decimal "target_amount", precision: 10, scale: 2
+    t.decimal "current_balance", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_savings_on_user_id"

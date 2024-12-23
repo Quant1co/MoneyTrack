@@ -16,9 +16,9 @@
   <p>Копилка</p>
 </header>
     <div class="savings-progress">
-      <div class="savings-goal-title"><h1><%= $saving.title || "Новая копилка" %></h1></div>
-      <div class="current-amount"><%= $saving.current_balance %></div>
-      <div class="savings-goal"><%= $saving.target_amount || 0%></div>
+      <div class="savings-goal-title"><h1>Название цели: <%= $saving.title || "Новая копилка" %></h1></div>
+      <div class="current-amount">Баланс: <%= $saving.current_balance %></div>
+      <div class="savings-goal">Цель сбора: <%= $saving.target_amount || 0%></div>
     </div>
 
     <div class="savings-actions">
