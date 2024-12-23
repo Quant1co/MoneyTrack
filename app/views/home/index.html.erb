@@ -22,7 +22,7 @@
     <div class="account-info">
       <p>Зарегистрируйтесь или войдите чтобы начать копить</p>
     </div>
-    <button class="account-button">Начать копить</button>
+    <%= link_to "Начать копить", login_path, class: "account-button" %>
   </div>
 
   <div class="expense-tracker">
@@ -62,16 +62,16 @@
   <div class="card">
     <h2>Курсы валют</h2>
     <div class="currency-item">
-      <span>USD/RUB</span>
-      <span > <%= $rates[:USD] %> </span>
-    </div>
-    <div class="currency-item">
-      <span>EUR/USD</span>
-      <span><%= $rates[:EUR] %></span>
-    </div>
-    <div class="currency-item">
-      <span>CNY/USD</span>
-      <span><%= $rates[:CNY] %></span>
+<!--      <span>USD/RUB</span>-->
+<!--      <span > <%#= $rates[:USD] %> </span>-->
+<!--    </div>-->
+<!--    <div class="currency-item">-->
+<!--      <span>EUR/USD</span>-->
+<!--      <span><%#= $rates[:EUR] %></span>-->
+<!--    </div>-->
+<!--    <div class="currency-item">-->
+<!--      <span>CNY/USD</span>-->
+<!--      <span><%#= $rates[:CNY] %></span>-->
     </div>
   </div>
 
@@ -259,70 +259,7 @@
         }
 
         // Функция для добавления акции в избранное
-        function addFavorite(button, stockTicker) {
-            fetch('/logined', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': getCSRFToken()
-                },
-                body: JSON.stringify({ ticker: stockTicker })
-            })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      button.classList.add('active');
-                      button.textContent = '★';
-                      showNotification(`${stockTicker} добавлена в избранное`, 'success');
-                      updateLocalStorage(stockTicker, 'add');
-                  } else {
-                      showNotification(`Ошибка: ${data.errors.join(', ')}`, 'error');
-                      // Отменяем изменение состояния кнопки
-                      button.classList.remove('active');
-                      button.textContent = '☆';
-                  }
-              })
-              .catch(error => {
-                  console.error('Ошибка при добавлении в избранное:', error);
-                  showNotification('Произошла ошибка при добавлении в избранное.', 'error');
-                  // Отменяем изменение состояния кнопки
-                  button.classList.remove('active');
-                  button.textContent = '☆';
-              });
-        }
 
-        // Функция для удаления акции из избранного
-        function removeFavorite(button, stockTicker) {
-            fetch(`/logined?ticker=${encodeURIComponent(stockTicker)}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': getCSRFToken()
-                }
-                // Тело запроса не требуется для DELETE
-            })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      button.classList.remove('active');
-                      button.textContent = '☆';
-                      showNotification(`${stockTicker} удалена из избранного`, 'info');
-                      updateLocalStorage(stockTicker, 'remove');
-                  } else {
-                      showNotification(`Ошибка: ${data.message}`, 'error');
-                      // Отменяем изменение состояния кнопки
-                      button.classList.add('active');
-                      button.textContent = '★';
-                  }
-              })
-              .catch(error => {
-                  console.error('Ошибка при удалении из избранного:', error);
-                  showNotification('Произошла ошибка при удалении из избранного.', 'error');
-                  // Отменяем изменение состояния кнопки
-                  button.classList.add('active');
-                  button.textContent = '★';
-              });
-        }
 
         // Функция для получения CSRF-токена
         function getCSRFToken() {
