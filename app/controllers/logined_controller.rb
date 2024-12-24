@@ -7,6 +7,8 @@ class LoginedController < ApplicationController
     @arr_advices = Advice.all
 
     @favorites = current_user.favorites
+    $saving = current_user.saving || current_user.create_saving(title: "Новая копилка", target_amount: 1000, current_balance: 0)
+
     respond_to do |format|
       format.html
       format.json { render json: @favorites }

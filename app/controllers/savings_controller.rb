@@ -3,7 +3,14 @@ class SavingsController < ApplicationController
 
   def show
     # Если у пользователя нет копилки, создаем её.
-  end
+    #
+    $saving = Saving.find_by(user_id: current_user.id)
+
+    # Если у пользователя нет копилки, создаем её
+    if $saving.nil?
+      $saving = Saving.create(user_id: current_user.id, title: "Новая копилка", current_balance: 0, target_amount: 1000)
+    end
+    end
 
   def update
     if $saving.update(saving_params)
@@ -46,6 +53,6 @@ class SavingsController < ApplicationController
   def saving_params
     params.require(:saving).permit(:title, :target_amount)
   end
-end
+  end
 
 

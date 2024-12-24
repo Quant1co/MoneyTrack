@@ -21,8 +21,9 @@
     <h2>Копилка</h2>
     <div class="balance"></div>
     <div class="account-info">
-      <p>Баланс: <%= $saving.current_balance %></p>
-      <p>Название цели: <%= $saving.title || "Новая копилка" %></p>
+        <p>Текущий баланс: <%= $saving.current_balance %></p>
+        <p><%= flash[:alert] %></p>
+        <p>Название цели: <%= $saving.title || "Новая копилка" %></p>
       <p>Цель сбора: <%= $saving.target_amount%></p>
       <div class="progress-bar">
         <div class="progress" style="width: <%= ($saving.current_balance / $saving.target_amount * 100)%>%"></div>
