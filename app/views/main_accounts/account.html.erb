@@ -1,0 +1,151 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MoneyTrack - Основной счёт</title>
+    
+    <%= stylesheet_link_tag "stylebalance", "data-turbo-track": "reload" %>
+
+</head>
+<body>
+    <header class="header">
+        <h1>MoneyTrack - Основной счет</h1>
+        <p>Управление финансами и операциями</p>
+    </header>
+
+    <div class="account-grid">
+        <div class="account-card">
+            <div class="account-balance">
+                <!-- количество денег на балансе отображается с бд -->
+            </div>
+
+            <div class="transaction-list">
+  <% if @expenses_incomes.present? %>
+    <% @expenses_incomes.each do |expense_income| %>
+      <div class="transaction-item" id="transaction-<%= expense_income.id %>">
+        <div class="transaction-details">
+          <strong><%= expense_income.description %></strong>
+          <span class="transaction-category"><%= expense_income.operation_type.capitalize %></span>
+          <span><%= expense_income.created_at.strftime('%d %b %Y') %></span>
+        </div>
+        <span class="<%= expense_income.operation_type == 'expense' ? 'withdrawal' : 'deposit' %>">
+          <%= "#{expense_income.sum} ₽" %>
+        </span>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Нет транзакций.</p>
+  <% end %>
+</div>
+
+
+
+
+           <%= form_with model: @expense_income, url: create_expense_income_main_account_path(@main_account), method: :post, local: true do |form| %>
+  <%= form.text_field :description, placeholder: 'Описание', required: true %>
+  <%= form.number_field :sum, placeholder: 'Сумма', step: 0.5, min: 0, required: true %>
+  <%= form.select :operation_type, ['Доход', 'Расход'], prompt: 'Выберите тип операции', required: true %>
+
+  <!-- Настоящая кнопка для отправки формы -->
+  <%= form.submit 'Добавить операцию' %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Москва, ул. Ленина, 123</p>
+                <p>8 (800) 123-45-67</p>
+                <p>support@moneytrack.ru</p>
+            </div>
+            <div class="footer-section">
+                <h3>Работа офиса</h3>
+                <p>Пн-Пт: 9:00 - 20:00</p>
+                <p>Сб-Вс: 10:00 - 17:00</p>
+                <p>Перерыв: 12:00 - 13:00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Социальные сети</h3>
+                <div class="social-links">
+                    <a>VK</a>
+                    <a>Telegram</a>
+                    <a>YouTube</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p> 2024 MoneyTrack. 2024 MoneyTrack. Все права защищены.</p>
+        </div>
+    </footer>
+
+<script>document.addEventListener('DOMContentLoaded', function () {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  const transferForm = document.querySelector('.transfer-form');
+  transferForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const amount = this.querySelector('input[type="number"]').value;
+    const description = this.querySelector('input[type="text"]').value;
+    if (!amount || !description) {
+      showNotification('Пожалуйста, заполните все поля');
+      return;
+    }
+    showNotification('Транзакция добавлена');
+    this.reset();
+  });
+});
+function showNotification(message) {
+  let container = document.getElementById('notification-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'notification-container';
+    container.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        `;
+    document.body.appendChild(container);
+  }
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+        background: #2c5530;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease-out;
+    `;
+  notification.textContent = message;
+  container.appendChild(notification);
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => {
+      container.removeChild(notification);
+    }, 300);
+  }, 3000);
+}</script>
+</body>
+</html>
