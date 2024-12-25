@@ -27,12 +27,12 @@
         <h2>Управление копилкой</h2>
         <div class="action-buttons">
           <%= form_with url: deposit_saving_path($saving), method: :post, local: true do |form| %>
-            <%= form.number_field :amount, class:"savings-input"%>
+            <%= form.text_field :amount, class: "savings-input", maxlength: 8 %>
             <%= form.submit "Пополнить", class:"savings-btn add-btn" %>
           <% end %>
           <%= form_with url: withdraw_saving_path($saving), method: :post, local: true do |form| %>
             <div>
-              <%= form.number_field :amount, class:"savings-input" %>
+              <%= form.text_field :amount, class: "savings-input", maxlength: 8 %>
               <%= form.submit "Снять", class:"savings-btn withdraw-btn" %>
             </div>
           <% end %>
