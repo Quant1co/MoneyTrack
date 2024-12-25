@@ -9,7 +9,6 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       redirect_to login_path, notice: "Регистрация успешно завершена!"
-      @user.create_main_account(current_balance: 1000)
     else
       render :new, status: :unprocessable_entity
     end

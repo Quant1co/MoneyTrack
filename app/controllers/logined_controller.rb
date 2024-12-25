@@ -7,5 +7,6 @@ class LoginedController < ApplicationController
 
   def index
     # Здесь будет логика отображения данных для авторизованного пользователя
+    $account = current_user.account
   end
 end

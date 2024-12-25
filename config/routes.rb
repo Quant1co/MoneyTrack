@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "transactions/create"
+  get "accounts/index"
+  get "accounts/new"
+  get "accounts/create"
   get "main_accounts/account"
   root 'home#index', as:'home'
   root to: 'home#index'
@@ -11,23 +15,10 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
+  resources :accounts, only: [:index, :new, :create]
+  resources :transactions, only: [:create]
 
-
-  get 'main_account/account', to: 'main_accounts#account', as: 'account'
-
-
-  resources :main_accounts do
-    member do
-      post 'create_expense_income'  # Создание операции
-    end
-  end
-
-
-
-
-
-
-
+  get 'account', to: 'accounts#index'  # Путь к основному счету
 
 
 
