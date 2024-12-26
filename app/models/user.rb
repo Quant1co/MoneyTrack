@@ -1,12 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
-
+  has_many :favorites
   has_one :account, dependent: :destroy
   after_create :create_default_account
-
   before_save :format_phone_number
-
-
+  has_one :saving ,dependent: :destroy
+  after_create :create_default_saving
 
   validates :full_name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
