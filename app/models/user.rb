@@ -28,5 +28,11 @@ class User < ApplicationRecord
     Account.create(user: self, balance: 1000.0)
   end
 
-
+  def create_default_saving
+    build_saving(
+      title: "Моя Копилка",
+      target_amount: 0.00,
+      current_balance: 0.00
+    ).save
+  end
 end
