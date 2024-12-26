@@ -19,6 +19,8 @@ gem "cssbundling-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem 'httparty'
+
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
@@ -56,7 +58,7 @@ group :development, :test do
 
   gem 'dotenv-rails'
 
-  gem 'httparty'
+
 
 end
 
