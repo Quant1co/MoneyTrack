@@ -1,14 +1,35 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get "transactions/create"
+  get "accounts/index"
+  get "accounts/new"
+  get "accounts/create"
+  get "main_accounts/account"
+  root 'home#index', as:'home'
+  root to: 'home#index'
+  get 'register', to: 'users#new', as: 'register'
+  post 'users', to: 'users#create', as: 'users'
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'logined', to: 'logined#index', as: 'logined'
+  post 'logined', to: 'logined#create'
+  delete 'logined', to: 'logined#destroy'
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  get 'login', to: 'sessions#new', as: 'login'
+  post 'login', to: 'sessions#create'
+  get '/logout', to: 'sessions#destroy'
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  get 'stocks/data', to: 'stocks#data', as: 'stocks_data'
+
+  resource :saving, only: [:show, :update] do
+    post 'deposit', on: :member
+    post 'withdraw', on: :member
+  end
+
+  resources :accounts, only: [:index, :new, :create]
+  resources :transactions, only: [:create]
+
+  get 'account', to: 'accounts#index'  # Путь к основному счету
+
+
+
+
 end
