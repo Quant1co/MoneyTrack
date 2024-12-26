@@ -15,6 +15,13 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
+  get 'stocks/data', to: 'stocks#data', as: 'stocks_data'
+
+  resource :saving, only: [:show, :update] do
+    post 'deposit', on: :member
+    post 'withdraw', on: :member
+  end
+
   resources :accounts, only: [:index, :new, :create]
   resources :transactions, only: [:create]
 
