@@ -18,7 +18,7 @@ class LoginedController < ApplicationController
       end
     end
 
-    #Добавление акции в избранное
+    # Добавление акции в избранное
     def create
       ticker = params[:ticker]
       stock = $stocks.find { |s| s[:ticker] == ticker }
