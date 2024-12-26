@@ -62,16 +62,16 @@
   <div class="card">
     <h2>Курсы валют</h2>
     <div class="currency-item">
-<!--      <span>USD/RUB</span>-->
-<!--      <span > <%#= $rates[:USD] %> </span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>EUR/USD</span>-->
-<!--      <span><%#= $rates[:EUR] %></span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>CNY/USD</span>-->
-<!--      <span><%#= $rates[:CNY] %></span>-->
+      <span>USD/RUB</span>
+      <span > <%= $rates[:USD] %> </span>
+    </div>
+    <div class="currency-item">
+      <span>EUR/USD</span>
+      <span><%= $rates[:EUR] %></span>
+    </div>
+    <div class="currency-item">
+      <span>CNY/USD</span>
+      <span><%= $rates[:CNY] %></span>
     </div>
   </div>
 
@@ -258,7 +258,6 @@
             }
         }
 
-        // Функция для добавления акции в избранное
 
 
         // Функция для получения CSRF-токена
@@ -269,11 +268,7 @@
 
         // Функция для отображения уведомлений
         function showNotification(message, type = 'info') {
-            // Реализуйте свою логику уведомлений
-            // Например, используя alert:
             alert(message);
-            // Или используя библиотеку уведомлений, например Toastr:
-            // toastr[type](message);
         }
 
         // Функция для обновления localStorage
