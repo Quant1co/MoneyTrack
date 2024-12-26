@@ -26,7 +26,7 @@
       <div class="progress-bar">
         <div class="progress" style="width: <%= ($saving.current_balance / $saving.target_amount * 100)%>%"></div>
       </div>
-      <p>Прогресс: <%= ($saving.current_balance / $saving.target_amount * 100).round %>%</p>
+      <p>Прогресс: <%= $saving.current_balance / 1 + ($saving.target_amount * 100).round %>%</p>
     </div>
     <%= link_to 'Войти в копилку', saving_path, class: 'account-button goal-btn' %>
   </div>

@@ -19,18 +19,10 @@
 <section class="finance-section">
   <div class="account-card">
     <h2>Копилка</h2>
-    <div class="balance">75,000 ₽</div>
     <div class="account-info">
-      <p>Цель: 100,000 ₽</p>
-      <div class="progress-bar">
-        <div class="progress"></div>
-      </div>
-      <p>Прогресс: 75%</p>
+      <p>Зарегистрируйтесь или войдите чтобы начать копить</p>
     </div>
-    <div class="account-info">
-      <p>Ежемесячный взнос: 5,000 ₽</p>
-    </div>
-    <button class="account-button">Добавить</button>
+    <%= link_to "Начать копить", login_path, class: "account-button" %>
   </div>
 
   <div class="expense-tracker">
