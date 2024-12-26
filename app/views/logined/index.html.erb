@@ -89,17 +89,20 @@
 
   <div class="card">
     <h2>Популярные акции</h2>
-    <div class="stock-item">
-      <span>Сбербанк</span>
-      <span class="up">270.45 ₽ (+1.2%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Газпром</span>
-      <span class="down">165.32 ₽ (-0.5%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Яндекс</span>
-      <span class="up">2750.80 ₽ (+2.1%)</span>
+    <div class="stock-list">
+      <% $stocks.each do |stock| %>
+        <div class="stock-item">
+          <span><%= stock[:ticker] %></span>
+          <span><%= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>
+          <% if session[:user_id] %>
+            <% if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+              <button class="fav-btn active" data-ticker="<%= stock[:ticker] %>">★</button>
+            <% else %>
+              <button class="fav-btn" data-ticker="<%= stock[:ticker] %>">☆</button>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
