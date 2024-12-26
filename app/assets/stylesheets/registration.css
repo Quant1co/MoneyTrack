@@ -147,3 +147,29 @@ body {
     margin-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.error-messages-box {
+    border: 2px solid #ff0000; /* Красная рамка */
+    background-color: #ffe6e6; /* Светло-красный фон */
+    color: #ff0000; /* Красный текст */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  .error-messages-box h2 {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .error-messages-box ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .error-messages-box li {
+    margin: 5px 0;
+  }
+  
+  

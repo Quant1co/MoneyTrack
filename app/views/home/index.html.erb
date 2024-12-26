@@ -19,10 +19,18 @@
 <section class="finance-section">
   <div class="account-card">
     <h2>Копилка</h2>
+    <div class="balance">75,000 ₽</div>
     <div class="account-info">
-      <p>Зарегистрируйтесь или войдите чтобы начать копить</p>
+      <p>Цель: 100,000 ₽</p>
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+      <p>Прогресс: 75%</p>
     </div>
-    <%= link_to "Начать копить", login_path, class: "account-button" %>
+    <div class="account-info">
+      <p>Ежемесячный взнос: 5,000 ₽</p>
+    </div>
+    <button class="account-button">Добавить</button>
   </div>
 
   <div class="expense-tracker">
@@ -37,74 +45,70 @@
 
   <div class="account-card">
     <h2>Основной счет</h2>
+    <div class="balance">150,000 ₽</div>
     <div class="account-info">
-      <p>Зарегистрируйтесь или войдите чтобы открыть счет</p>
+      <p>Доступно: 145,000 ₽</p>
+      <p>Заблокировано: 5,000 ₽</p>
     </div>
-<!--    <button class="account-button">Открыть счет</button>-->
-    <%= link_to "Открыть счет", login_path, class: "account-button" %>
+    <div class="account-info">
+      <p>Последние операции:</p>
+      <p>Продукты -2,500 ₽</p>
+      <p>Кафе -800 ₽</p>
+      <p>Транспорт -100 ₽</p>
+    </div>
+    <%= link_to "Пополнить", login_path, class: "account-button" %>
   </div>
 </section>
 
 <div class="container">
   <div class="card">
     <h2>Финансовые советы</h2>
-    <div class="advice-list">
-      <% $arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
-        </div>
-      <% end %>
+    <div class="tip">
+      <h3>🎯 Правило 50/30/20</h3>
+      <p>50% дохода на необходимые расходы, 30% на желания, 20% на сбережения</p>
+    </div>
+    <div class="tip">
+      <h3>💰 Подушка безопасности</h3>
+      <p>Создайте запас денег на 3-6 месяцев жизни</p>
+    </div>
+    <div class="tip">
+      <h3>📈 Инвестиции</h3>
+      <p>Начните инвестировать даже небольшие суммы регулярно</p>
     </div>
   </div>
-
 
   <div class="card">
     <h2>Курсы валют</h2>
     <div class="currency-item">
       <span>USD/RUB</span>
-      <span > <%= $rates[:USD] %> </span>
+      <span class="up">91.45 ₽ (+0.2%)</span>
     </div>
     <div class="currency-item">
-      <span>EUR/USD</span>
-      <span><%= $rates[:EUR] %></span>
+      <span>EUR/RUB</span>
+      <span class="down">98.32 ₽ (-0.1%)</span>
     </div>
     <div class="currency-item">
-      <span>CNY/USD</span>
-      <span><%= $rates[:CNY] %></span>
+      <span>CNY/RUB</span>
+      <span class="up">12.67 ₽ (+0.3%)</span>
     </div>
   </div>
-
-
 
   <div class="card">
     <h2>Популярные акции</h2>
-
-    <div class="stock-list">
-
+    <div class="stock-item">
+      <span>Сбербанк</span>
+      <span class="up">270.45 ₽ (+1.2%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Газпром</span>
+      <span class="down">165.32 ₽ (-0.5%)</span>
+    </div>
+    <div class="stock-item">
+      <span>Яндекс</span>
+      <span class="up">2750.80 ₽ (+2.1%)</span>
     </div>
   </div>
-
-<!--  <div class="card">-->
-<!--    <h2>Популярные акции</h2>-->
-<!--    <div class="stock-list">-->
-      <%# $stocks.each do |stock| %>
-<!--        <div class="stock-item">-->
-<!--          <span><%#= stock[:ticker] %></span>-->
-<!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
-          <%# if session[:user_id] %>
-            <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
-<!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
-            <%# else %>
-<!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
-      <%# end %>
-<!--    </div>-->
-<!--  </div>-->
-</div>>
-
+</div>
 
 <footer class="footer">
   <div class="footer-content">
@@ -135,163 +139,129 @@
 </footer>
 
 <script>
-    // async function loadStocks() {
-    //     try {
-    //         const response = await fetch('/stocks/data');  // Замените на реальный путь к API
-    //         const stocks = await response.json();
-    //
-    //         const stockList = document.getElementById('stock-list');
-    //         stockList.innerHTML = ''; // Очистить контейнер перед вставкой
-    //
-    //         stocks.forEach(stock => {
-    //             const stockItem = document.createElement('div');
-    //             stockItem.classList.add('stock-item');
-    //
-    //             // Добавление информации о тикере и цене
-    //             stockItem.innerHTML = `
-    //       <span>${stock.ticker}</span>
-    //       <span>${stock.price.toFixed(2)} $</span>
-    //     `;
-    //
-    //             // Добавление кнопки для избранных акций (если пользователь залогинен)
-    //             if (userLoggedIn) {  // Проверка, если пользователь залогинен
-    //                 const button = document.createElement('button');
-    //                 button.classList.add('fav-btn');
-    //                 button.dataset.ticker = stock.ticker;
-    //
-    //                 // Проверка, если акция в избранных
-    //                 if (stock.isFavorite) {
-    //                     button.classList.add('active');
-    //                     button.textContent = '★';
-    //                 } else {
-    //                     button.textContent = '☆';
-    //                 }
-    //
-    //                 stockItem.appendChild(button);
-    //             }
-    //
-    //             // Вставка нового элемента в список
-    //             stockList.appendChild(stockItem);
-    //         });
-    //     } catch (error) {
-    //         console.error('Ошибка при загрузке акций:', error);
-    //     }
-    // }
-    //
-    // // Вызов функции загрузки акций при загрузке страницы
-    // window.onload = loadStocks;
-    //app/javascript/packs/favorites.js
+    // Обновление данных каждые 5 минут
+    function updateFinancialData() {
+        console.log('Обновление финансовых данных...');
+    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const stockListContainer = document.querySelector('.stock-list'); // Контейнер для списка акций
+    function highlightNewData(element) {
+        element.classList.add('highlight');
+        setTimeout(() => {
+            element.classList.remove('highlight');
+        }, 2000);
+    }
 
+    setInterval(updateFinancialData, 300000);
 
-        // Функция для загрузки акций
-        function loadStocks() {
-            fetch('/stocks/data', {
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-Token': getCSRFToken()
-                }
-            })
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error('Сетевая ошибка');
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  renderStocks(data);
-              })
-              .catch(error => {
-                  console.error('Ошибка при загрузке акций:', error);
-                  showNotification('Произошла ошибка при загрузке акций.', 'error');
-              });
-        }
-
-        // Функция для рендеринга акций в DOM
-        function renderStocks(stocks) {
-            stockListContainer.innerHTML = ''; // Очищаем текущий список
-
-            stocks.forEach(stock => {
-                const stockItem = document.createElement('div');
-                stockItem.classList.add('stock-item');
-
-                // Создаём элемент для тикера
-                const tickerSpan = document.createElement('span');
-                tickerSpan.textContent = stock.ticker;
-
-                // Создаём элемент для цены
-                const priceSpan = document.createElement('span');
-                priceSpan.textContent = `$${parseFloat(stock.price).toFixed(2)}`;
-
-                // Создаём кнопку избранного
-                // if (window.userLoggedIn === 'true') {
-                //     console.log('Пользователь залогинен');
-                //     const favButton = document.createElement('button');
-                //     favButton.classList.add('fav-btn');
-                //     favButton.dataset.ticker = stock.ticker;
-                //     favButton.textContent = '☆'; // По умолчанию не в избранном
-                // }
-
-
-                // Проверяем, находится ли акция в избранном (можно передать список избранных акций из сервера)
-
-                // Вставляем элементы в stock-item
-                stockItem.appendChild(tickerSpan);
-                stockItem.appendChild(priceSpan);
-                //stockItem.appendChild(favButton);
-
-                // Вставляем stock-item в stock-list
-                stockListContainer.appendChild(stockItem);
-            });
-        }
-
-        // Функция для переключения избранного
-        function toggleFavorite(button, stockTicker, isActive) {
-            if (!isActive) {
-                // Добавление в избранное
-                addFavorite(button, stockTicker);
-            } else {
-                // Удаление из избранного
-                removeFavorite(button, stockTicker);
-            }
-        }
-
-
-
-        // Функция для получения CSRF-токена
-        function getCSRFToken() {
-            const tokenElement = document.querySelector('meta[name="csrf-token"]');
-            return tokenElement ? tokenElement.getAttribute('content') : '';
-        }
-
-        // Функция для отображения уведомлений
-        function showNotification(message, type = 'info') {
-            alert(message);
-        }
-
-        // Функция для обновления localStorage
-        function updateLocalStorage(stockTicker, action) {
-            let favorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
-
-            if (action === 'add') {
-                if (!favorites.includes(stockTicker)) {
-                    favorites.push(stockTicker);
-                }
-            } else if (action === 'remove') {
-                favorites = favorites.filter(stock => stock !== stockTicker);
-            }
-
-            localStorage.setItem('favoriteStocks', JSON.stringify(favorites));
-        }
-
-        // Получение текущих избранных акций из localStorage
-        const currentFavorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
-
-        loadStocks()
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
     });
 
+    const tips = [
+        "Ведите учет всех расходов",
+        "Используйте кэшбэк-сервисы",
+        "Планируйте крупные покупки заранее"
+    ];
+
+    function addNewTip() {
+        const tipsContainer = document.querySelector('.card:first-child');
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        const tipElement = document.createElement('div');
+        tipElement.className = 'tip';
+        tipElement.innerHTML = `
+            <h3>💡 Совет дня</h3>
+            <p>${randomTip}</p>
+        `;
+        tipsContainer.appendChild(tipElement);
+        highlightNewData(tipElement);
+    }
+
+    setInterval(addNewTip, 3600000);
+
+    let expenseChart;
+    const expenses = {
+        labels: [],
+        data: []
+    };
+
+    function initChart() {
+        const ctx = document.getElementById('expense-chart').getContext('2d');
+        expenseChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: expenses.labels,
+                datasets: [{
+                    label: 'Расходы',
+                    data: expenses.data,
+                    borderColor: '#408945',
+                    backgroundColor: 'rgba(64, 137, 69, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Сумма (₽)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Время'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function addExpense() {
+        const amount = parseFloat(document.getElementById('expense-amount').value);
+        const description = document.getElementById('expense-description').value;
+
+        if (amount && description) {
+            const now = new Date();
+            const timeLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            expenses.labels.push(timeLabel);
+            expenses.data.push(amount);
+
+            if (!expenseChart) {
+                initChart();
+            } else {
+                expenseChart.data.labels = expenses.labels;
+                expenseChart.data.datasets[0].data = expenses.data;
+                expenseChart.update();
+            }
+
+            document.getElementById('expense-amount').value = '';
+            document.getElementById('expense-description').value = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initChart);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.account-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('Button clicked:', this.textContent);
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    });
 </script>
 </body>
 </html>

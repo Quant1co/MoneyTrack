@@ -1,0 +1,28 @@
+<%= link_to 'Вернуться на главную страницу', logined_path, class: 'button top-up-button' %>
+<h1>Счет пользователя: <%= current_user.email %></h1>
+<p>Баланс: <%= number_to_currency(@account.balance) %></p>
+
+<h2>Создать новую транзакцию</h2>
+<%= link_to 'New Transaction', new_account_path %>
+
+<h2>История операций</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Название</th>
+    <th>Сумма</th>
+    <th>Тип</th>
+    <th>Дата</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @transactions.each do |transaction| %>
+    <tr>
+      <td><%= transaction.name %></td>
+      <td><%= number_to_currency(transaction.amount) %></td>
+      <td><%= transaction.transaction_type.capitalize %></td>
+      <td><%= transaction.created_at.strftime("%d/%m/%Y") %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
