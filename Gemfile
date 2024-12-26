@@ -56,6 +56,8 @@ group :development, :test do
 
   gem 'dotenv-rails'
 
+  gem 'httparty'
+
 end
 
 group :development do
@@ -73,5 +75,4 @@ group :test do
   gem 'bcrypt', '~> 3.1.7'
 
   gem 'nokogiri'
-  gem 'httparty'
 end

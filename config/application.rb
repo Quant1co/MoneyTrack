@@ -1,4 +1,5 @@
 require_relative "boot"
+require 'httparty'
 
 require "rails/all"
 
