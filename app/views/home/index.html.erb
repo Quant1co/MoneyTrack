@@ -95,17 +95,9 @@
 
   <div class="card">
     <h2>Популярные акции</h2>
-    <div class="stock-item">
-      <span>Сбербанк</span>
-      <span class="up">270.45 ₽ (+1.2%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Газпром</span>
-      <span class="down">165.32 ₽ (-0.5%)</span>
-    </div>
-    <div class="stock-item">
-      <span>Яндекс</span>
-      <span class="up">2750.80 ₽ (+2.1%)</span>
+
+    <div class="stock-list">
+
     </div>
   </div>
 </div>
@@ -262,6 +254,117 @@
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const stockListContainer = document.querySelector('.stock-list'); // Контейнер для списка акций
+
+
+        // Функция для загрузки акций
+        function loadStocks() {
+            fetch('/stocks/data', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-Token': getCSRFToken()
+                }
+            })
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Сетевая ошибка');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  renderStocks(data);
+              })
+              .catch(error => {
+                  console.error('Ошибка при загрузке акций:', error);
+                  showNotification('Произошла ошибка при загрузке акций.', 'error');
+              });
+        }
+
+        // Функция для рендеринга акций в DOM
+        function renderStocks(stocks) {
+            stockListContainer.innerHTML = ''; // Очищаем текущий список
+
+            stocks.forEach(stock => {
+                const stockItem = document.createElement('div');
+                stockItem.classList.add('stock-item');
+
+                // Создаём элемент для тикера
+                const tickerSpan = document.createElement('span');
+                tickerSpan.textContent = stock.ticker;
+
+                // Создаём элемент для цены
+                const priceSpan = document.createElement('span');
+                priceSpan.textContent = `$${parseFloat(stock.price).toFixed(2)}`;
+
+                // Создаём кнопку избранного
+                // if (window.userLoggedIn === 'true') {
+                //     console.log('Пользователь залогинен');
+                //     const favButton = document.createElement('button');
+                //     favButton.classList.add('fav-btn');
+                //     favButton.dataset.ticker = stock.ticker;
+                //     favButton.textContent = '☆'; // По умолчанию не в избранном
+                // }
+
+
+                // Проверяем, находится ли акция в избранном (можно передать список избранных акций из сервера)
+
+                // Вставляем элементы в stock-item
+                stockItem.appendChild(tickerSpan);
+                stockItem.appendChild(priceSpan);
+                //stockItem.appendChild(favButton);
+
+                // Вставляем stock-item в stock-list
+                stockListContainer.appendChild(stockItem);
+            });
+        }
+
+        // Функция для переключения избранного
+        function toggleFavorite(button, stockTicker, isActive) {
+            if (!isActive) {
+                // Добавление в избранное
+                addFavorite(button, stockTicker);
+            } else {
+                // Удаление из избранного
+                removeFavorite(button, stockTicker);
+            }
+        }
+
+
+
+        // Функция для получения CSRF-токена
+        function getCSRFToken() {
+            const tokenElement = document.querySelector('meta[name="csrf-token"]');
+            return tokenElement ? tokenElement.getAttribute('content') : '';
+        }
+
+        // Функция для отображения уведомлений
+        function showNotification(message, type = 'info') {
+            alert(message);
+        }
+
+        // Функция для обновления localStorage
+        function updateLocalStorage(stockTicker, action) {
+            let favorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+
+            if (action === 'add') {
+                if (!favorites.includes(stockTicker)) {
+                    favorites.push(stockTicker);
+                }
+            } else if (action === 'remove') {
+                favorites = favorites.filter(stock => stock !== stockTicker);
+            }
+
+            localStorage.setItem('favoriteStocks', JSON.stringify(favorites));
+        }
+
+        // Получение текущих избранных акций из localStorage
+        const currentFavorites = JSON.parse(localStorage.getItem('favoriteStocks')) || [];
+
+        loadStocks()
+    });
+
 </script>
 </body>
 </html>
