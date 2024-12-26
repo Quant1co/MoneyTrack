@@ -31,15 +31,15 @@
     <%= link_to 'Войти в копилку', saving_path, class: 'account-button goal-btn' %>
   </div>
 
-  <div class="expense-tracker">
-    <h2>Отслеживание расходов</h2>
-    <div class="expense-form">
-      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
-      <input type="text" id="expense-description" placeholder="Описание расхода">
-      <button onclick="addExpense()">Добавить расход</button>
-    </div>
-    <canvas id="expense-chart"></canvas>
-  </div>
+<!--  <div class="expense-tracker">-->
+<!--    <h2>Отслеживание расходов</h2>-->
+<!--    <div class="expense-form">-->
+<!--      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">-->
+<!--      <input type="text" id="expense-description" placeholder="Описание расхода">-->
+<!--      <button onclick="addExpense()">Добавить расход</button>-->
+<!--    </div>-->
+<!--    <canvas id="expense-chart"></canvas>-->
+<!--  </div>-->
 
   <div class="account-card">
   <h2>Основной счет</h2>
@@ -54,7 +54,7 @@
     <p>Кафе -800 ₽</p>
     <p>Транспорт -100 ₽</p>
   </div>
-  <%=link_to 'Перейти в основной счет', account_path , class: 'button top-up-button' %>
+  <%=link_to 'Перейти в основной счет', account_path , class: 'account-button goal-btn' %>
 </div>
 
 </section>

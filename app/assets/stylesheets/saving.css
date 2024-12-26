@@ -58,9 +58,6 @@ body {
     background-color: #e8f4f4;
 }
 
-.login-btn, .register-btn {
-    display: none;
-}
 
 .container {
     max-width: 1200px;
