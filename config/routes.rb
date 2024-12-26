@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'users', to: 'users#create', as: 'users'
 
   get 'logined', to: 'logined#index', as: 'logined'
+  post 'logined', to: 'logined#create'
 
   get 'login', to: 'sessions#new', as: 'login'
   post 'login', to: 'sessions#create'
