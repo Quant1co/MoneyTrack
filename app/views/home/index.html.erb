@@ -81,15 +81,15 @@
     <h2>Курсы валют</h2>
     <div class="currency-item">
       <span>USD/RUB</span>
-      <span class="up">91.45 ₽ (+0.2%)</span>
+      <span > <%= $rates[:USD] %> </span>
     </div>
     <div class="currency-item">
-      <span>EUR/RUB</span>
-      <span class="down">98.32 ₽ (-0.1%)</span>
+      <span>EUR/USD</span>
+      <span><%= $rates[:EUR] %></span>
     </div>
     <div class="currency-item">
-      <span>CNY/RUB</span>
-      <span class="up">12.67 ₽ (+0.3%)</span>
+      <span>CNY/USD</span>
+      <span><%= $rates[:CNY] %></span>
     </div>
   </div>
 
