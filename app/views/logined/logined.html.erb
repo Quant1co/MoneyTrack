@@ -1,16 +1,14 @@
-<html>
-<head>
+<html><head>
   <meta charset="UTF-8">
   <title>MoneyTrack - Управление финансами</title>
   <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
   <%= stylesheet_link_tag 'loginindex', media: 'all' %>
 </head>
 <body>
 <header class="header">
   <div class="auth-buttons">
-    <a class="auth-button profile-btn">Мой профиль</a>
-    <%= link_to "Выйти", logout_path, method: :get, class: "auth-button logout-btn" %>
+<!--    <a class="auth-button profile-btn">Мой профиль</a>-->
+    <%= link_to 'Выйти', logout_path, class: 'auth-button logout-btn', data: { confirm: 'Вы уверены, что хотите выйти?' } %>
   </div>
   <h1>MoneyTrack</h1>
   <p>Ваш личный финансовый помощник</p>
@@ -21,91 +19,86 @@
     <h2>Копилка</h2>
     <div class="balance"></div>
     <div class="account-info">
-      <p>Цель: 100,000 ₽</p>
+      <p>Текущий баланс: <%= $saving.current_balance %></p>
+      <p><%= flash[:alert] %></p>
+      <p>Название цели: <%= $saving.title || "Новая копилка" %></p>
+      <p>Цель сбора: <%= $saving.target_amount%></p>
       <div class="progress-bar">
-        <div class="progress"></div>
+        <div class="progress" style="width: <%= ($saving.current_balance / $saving.target_amount * 100)%>%"></div>
       </div>
-      <p>Прогресс: 75%</p>
+      <p>Прогресс: <%= $saving.current_balance / 1 + ($saving.target_amount * 100).round %>%</p>
     </div>
-    <div class="account-info">
-      <p>Ежемесячный взнос: 5,000 ₽</p>
-    </div>
-      <%= link_to 'Войти в копилку', saving_path, class: 'account-button goal-btn' %>
+    <%= link_to 'Войти в копилку', saving_path, class: 'account-button goal-btn' %>
   </div>
 
-  <div class="expense-tracker">
-    <h2>Отслеживание расходов</h2>
-    <div class="expense-form">
-      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
-      <input type="text" id="expense-description" placeholder="Описание расхода">
-      <button onclick="addExpense()">Добавить расход</button>
-    </div>
-    <canvas id="expense-chart"></canvas>
-  </div>
+<!--  <div class="expense-tracker">-->
+<!--    <h2>Отслеживание расходов</h2>-->
+<!--    <div class="expense-form">-->
+<!--      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">-->
+<!--      <input type="text" id="expense-description" placeholder="Описание расхода">-->
+<!--      <button onclick="addExpense()">Добавить расход</button>-->
+<!--    </div>-->
+<!--    <canvas id="expense-chart"></canvas>-->
+<!--  </div>-->
 
   <div class="account-card">
-    <h2>Основной счет</h2>
-    <div class="balance">150,000 ₽</div>
-    <div class="account-info">
-      <p>Доступно: 145,000 ₽</p>
-      <p>Заблокировано: 5,000 ₽</p>
-    </div>
-    <div class="account-info">
-      <p>Последние операции:</p>
-      <p>Продукты -2,500 ₽</p>
-      <p>Кафе -800 ₽</p>
-      <p>Транспорт -100 ₽</p>
-    </div>
+  <h2>Основной счет</h2>
+  <div class="balance"><%= $account.balance %></div>
+    <%=link_to 'Перейти в основной счет', account_path , class: 'account-button goal-btn' %>
   </div>
+</div>
+
 </section>
 
 <div class="container">
+    <div class="card">
+      <h2>Финансовые советы</h2>
+      <div class="advice-list">
+        <% $arr_advices.each do |advice| %>
+          <div class="tip">
+            <h3>💡 Полезный совет</h3>
+            <p><%= advice.content %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+
+
   <div class="card">
-    <h2>Финансовые советы</h2>
-    <div class="advice-list">
-      <% @arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
+    <% $rates.each do |currency, rate| %>
+      <% if rate.present? && rate != 0 %>
+        <div class="currency-item">
+          <span> <%= currency %> </span>
+          <span><%= (1.0 / rate).round(2) %> RUB</span>
+        </div>
+      <% else %>
+        <div class="currency-item">
+          <span> <%= currency %> </span>
+          <span>Недоступно</span>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="card">
+    <h2>Популярные акции</h2>
+    <div class="stock-list">
+      <% $stocks.each do |stock| %>
+        <div class="stock-item">
+          <span><%= stock[:ticker] %></span>
+          <span><%= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>
+          <% if session[:user_id] %>
+            <% if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+              <button class="fav-btn active" data-ticker="<%= stock[:ticker] %>">★</button>
+            <% else %>
+              <button class="fav-btn" data-ticker="<%= stock[:ticker] %>">☆</button>
+            <% end %>
+          <% end %>
         </div>
       <% end %>
     </div>
   </div>
-
-  <div class="card">
-    <h2>Курсы валют</h2>
-<!--    <div class="currency-item">-->
-<!--      <span>USD/RUB</span>-->
-<!--      <span > <%#= $rates[:USD] %> </span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>EUR/USD</span>-->
-<!--      <span><%#= $rates[:EUR] %></span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>CNY/USD</span>-->
-<!--      <span><%#= $rates[:CNY] %></span>-->
-<!--    </div>-->
-  </div>
-
-<!--  <div class="card">-->
-<!--    <h2>Популярные акции</h2>-->
-<!--    <div class="stock-list">-->
-      <%# $stocks.each do |stock| %>
-<!--        <div class="stock-item">-->
-<!--          <span><%#= stock[:ticker] %></span>-->
-<!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
-          <%# if session[:user_id] %>
-            <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
-<!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
-            <%# else %>
-<!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
-      <%# end %>
-<!--    </div>-->
-<!--  </div>-->
 </div>
 
 <footer class="footer">

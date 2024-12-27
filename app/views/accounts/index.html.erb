@@ -1,0 +1,60 @@
+<head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Копилка</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'saving', media: 'all' %>
+</head>
+<style>
+    .accp-card {
+        text-align: center;
+        width: 80%; /* Занимает 80% ширины контейнера */
+        max-width: 400px; /* Максимальная ширина блока */
+        margin: 0 auto; /* Центрировать блок */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+</style>
+<header class="header">
+  <div class="auth-buttons">
+    <%= link_to "Выйти на главную страницу", logined_path, method: :get, class: "auth-button logout-btn" %>
+    <!--    <a class="auth-button logout-btn">Выйти</a>-->
+  </div>
+  <h1>MoneyTrack</h1>
+  <p>Копилка</p>
+</header>
+<div class="accp-card">
+    <div class="account-info">
+      <p style="text-align: center;">Счет пользователя: <%= current_user.full_name %></p>
+      <p style="text-align: center;">Баланс: <%= @account.balance %></p>
+    </div>
+      <div class="account-info"><p style="text-align: center;" ><%= link_to 'Создать новую транзакцию', new_account_path, class: 'account-button goal-btn' %></p>
+      </div>
+    </div>
+<div class = "account-info">
+  <h2 style="text-align: center;" >История операций</h2>
+  <table style="margin: 0 auto;">
+    <thead>
+    <tr>
+      <th>Название</th>
+      <th>Сумма</th>
+      <th>Тип</th>
+      <th>Дата</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.name %></td>
+        <td><%= number_to_currency(transaction.amount) %></td>
+        <td><%= transaction.transaction_type.capitalize %></td>
+        <td><%= transaction.created_at.strftime("%d/%m/%Y") %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
