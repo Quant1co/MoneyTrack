@@ -40,7 +40,7 @@
     <div class="account-info">
       <p>Зарегистрируйтесь или войдите чтобы открыть счет</p>
     </div>
-<!--    <button class="account-button">Открыть счет</button>-->
+    <!--    <button class="account-button">Открыть счет</button>-->
     <%= link_to "Открыть счет", login_path, class: "account-button" %>
   </div>
 </section>
@@ -60,21 +60,23 @@
 
 
   <div class="card">
-    <h2>Курсы валют</h2>
-    <div class="currency-item">
-<!--      <span>USD/RUB</span>-->
-<!--      <span > <%#= $rates[:USD] %> </span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>EUR/USD</span>-->
-<!--      <span><%#= $rates[:EUR] %></span>-->
-<!--    </div>-->
-<!--    <div class="currency-item">-->
-<!--      <span>CNY/USD</span>-->
-<!--      <span><%#= $rates[:CNY] %></span>-->
+    <h2>Курсы валют RUB</h2>
+    <div class="currency-list">
+        <% $rates.each do |currency, rate| %>
+          <% if rate.present? && rate != 0 %>
+            <div class="currency-item">
+              <span> <%= currency %> </span>
+              <span><%= (1.0 / rate).round(2) %> RUB</span>
+            </div>
+          <% else %>
+            <div class="currency-item">
+              <span> <%= currency %> </span>
+              <span>Недоступно</span>
+            </div>
+          <% end %>
+        <% end %>
     </div>
   </div>
-
 
 
   <div class="card">
@@ -85,24 +87,24 @@
     </div>
   </div>
 
-<!--  <div class="card">-->
-<!--    <h2>Популярные акции</h2>-->
-<!--    <div class="stock-list">-->
-      <%# $stocks.each do |stock| %>
-<!--        <div class="stock-item">-->
-<!--          <span><%#= stock[:ticker] %></span>-->
-<!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
-          <%# if session[:user_id] %>
-            <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
-<!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
-            <%# else %>
-<!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
-            <%# end %>
-          <%# end %>
-<!--        </div>-->
-      <%# end %>
-<!--    </div>-->
-<!--  </div>-->
+  <!--  <div class="card">-->
+  <!--    <h2>Популярные акции</h2>-->
+  <!--    <div class="stock-list">-->
+  <%# $stocks.each do |stock| %>
+  <!--        <div class="stock-item">-->
+  <!--          <span><%#= stock[:ticker] %></span>-->
+  <!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
+  <%# if session[:user_id] %>
+  <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+  <!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
+  <%# else %>
+  <!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
+  <%# end %>
+  <%# end %>
+  <!--        </div>-->
+  <%# end %>
+  <!--    </div>-->
+  <!--  </div>-->
 </div>>
 
 
@@ -194,19 +196,19 @@
                     'X-CSRF-Token': getCSRFToken()
                 }
             })
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error('Сетевая ошибка');
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  renderStocks(data);
-              })
-              .catch(error => {
-                  console.error('Ошибка при загрузке акций:', error);
-                  showNotification('Произошла ошибка при загрузке акций.', 'error');
-              });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сетевая ошибка');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    renderStocks(data);
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке акций:', error);
+                    showNotification('Произошла ошибка при загрузке акций.', 'error');
+                });
         }
 
         // Функция для рендеринга акций в DOM

@@ -18,7 +18,7 @@ class HomeController < ApplicationController
     service = CurrencyService.new(api_key)
 
     # Получаем курсы валют относительно USD
-    #$rates = service.get_exchange_rates
+    $rates = service.get_exchange_rates
 
   end
 
