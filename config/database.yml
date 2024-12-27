@@ -1,36 +1,22 @@
-
 default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
 
 development:
-  <<: *default
-  database: money_track_development
-  username: <%= ENV["DATABASE_USER"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: your_app_development
 
-  
 test:
-  <<: *default
-  database: money_track_test
-  username: <%= ENV["DATABASE_USER"] %>
-  password: <%= ENV["DATABASE_PASSWORD"] %>
-
+  primary:
+    <<: *default
+    database: your_app_test
 
 production:
   primary:
-    adapter: postgresql
-    encoding: unicode
-    database: your_primary_database_production
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    username: your_db_username
-    password: <%= ENV['YOUR_DB_PASSWORD'] %>
-    host: your_db_host
-
-cable:
-  adapter: postgresql
-  url: <%= ENV['CABLE_DATABASE_URL'] %>
-
-
+    <<: *default
+    database: your_app_production
