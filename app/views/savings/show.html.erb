@@ -8,6 +8,7 @@
 <body>
 <header class="header">
   <div class="auth-buttons">
+    <a class="auth-button profile-btn">Мой профиль</a>
     <%= link_to "Выйти из копилки", logined_path, method: :get, class: "auth-button logout-btn" %>
 <!--    <a class="auth-button logout-btn">Выйти</a>-->
   </div>
@@ -15,9 +16,9 @@
   <p>Копилка</p>
 </header>
     <div class="savings-progress">
-      <div class="savings-goal-title"><h1>Название цели: <%= $saving.title || "Новая копилка" %></h1></div>
-      <div class="current-amount">Баланс: <%= $saving.current_balance %></div>
-      <div class="savings-goal">Цель сбора: <%= $saving.target_amount || 0%></div>
+      <div class="savings-goal-title"><h1><%= $saving.title || "Новая копилка" %></h1></div>
+      <div class="current-amount"><%= $saving.current_balance %></div>
+      <div class="savings-goal"><%= $saving.target_amount || 0%></div>
     </div>
 
     <div class="savings-actions">
@@ -26,12 +27,12 @@
         <h2>Управление копилкой</h2>
         <div class="action-buttons">
           <%= form_with url: deposit_saving_path($saving), method: :post, local: true do |form| %>
-            <%= form.text_field :amount, class: "savings-input", maxlength: 8 %>
+            <%= form.number_field :amount, class:"savings-input"%>
             <%= form.submit "Пополнить", class:"savings-btn add-btn" %>
           <% end %>
           <%= form_with url: withdraw_saving_path($saving), method: :post, local: true do |form| %>
             <div>
-              <%= form.text_field :amount, class: "savings-input", maxlength: 8 %>
+              <%= form.number_field :amount, class:"savings-input" %>
               <%= form.submit "Снять", class:"savings-btn withdraw-btn" %>
             </div>
           <% end %>
