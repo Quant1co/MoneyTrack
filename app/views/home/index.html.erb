@@ -25,30 +25,23 @@
     <%= link_to "Начать копить", login_path, class: "account-button" %>
   </div>
 
-<!--  <div class="expense-tracker">-->
-<!--    <h2>Отслеживание расходов</h2>-->
-<!--    <div class="expense-form">-->
-<!--      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">-->
-<!--      <input type="text" id="expense-description" placeholder="Описание расхода">-->
-<!--      <button onclick="addExpense()">Добавить расход</button>-->
-<!--    </div>-->
-<!--    <canvas id="expense-chart"></canvas>-->
-<!--  </div>-->
+  <div class="expense-tracker">
+    <h2>Отслеживание расходов</h2>
+    <div class="expense-form">
+      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
+      <input type="text" id="expense-description" placeholder="Описание расхода">
+      <button onclick="addExpense()">Добавить расход</button>
+    </div>
+    <canvas id="expense-chart"></canvas>
+  </div>
 
   <div class="account-card">
     <h2>Основной счет</h2>
-    <div class="balance">150,000 ₽</div>
     <div class="account-info">
-      <p>Доступно: 145,000 ₽</p>
-      <p>Заблокировано: 5,000 ₽</p>
+      <p>Зарегистрируйтесь или войдите чтобы открыть счет</p>
     </div>
-    <div class="account-info">
-      <p>Последние операции:</p>
-      <p>Продукты -2,500 ₽</p>
-      <p>Кафе -800 ₽</p>
-      <p>Транспорт -100 ₽</p>
-    </div>
-    <%= link_to "Пополнить", login_path, class: "account-button" %>
+    <!--    <button class="account-button">Открыть счет</button>-->
+    <%= link_to "Открыть счет", login_path, class: "account-button" %>
   </div>
 </section>
 
@@ -65,21 +58,26 @@
     </div>
   </div>
 
+
   <div class="card">
-    <h2>Курсы валют</h2>
-    <div class="currency-item">
-      <span>USD/RUB</span>
-      <span > <%= $rates[:USD] %> </span>
-    </div>
-    <div class="currency-item">
-      <span>EUR/USD</span>
-      <span><%= $rates[:EUR] %></span>
-    </div>
-    <div class="currency-item">
-      <span>CNY/USD</span>
-      <span><%= $rates[:CNY] %></span>
+    <h2>Курсы валют RUB</h2>
+    <div class="currency-list">
+        <% $rates.each do |currency, rate| %>
+          <% if rate.present? && rate != 0 %>
+            <div class="currency-item">
+              <span> <%= currency %> </span>
+              <span><%= (1.0 / rate).round(2) %> RUB</span>
+            </div>
+          <% else %>
+            <div class="currency-item">
+              <span> <%= currency %> </span>
+              <span>Недоступно</span>
+            </div>
+          <% end %>
+        <% end %>
     </div>
   </div>
+
 
   <div class="card">
     <h2>Популярные акции</h2>
@@ -88,7 +86,27 @@
 
     </div>
   </div>
-</div>
+
+  <!--  <div class="card">-->
+  <!--    <h2>Популярные акции</h2>-->
+  <!--    <div class="stock-list">-->
+  <%# $stocks.each do |stock| %>
+  <!--        <div class="stock-item">-->
+  <!--          <span><%#= stock[:ticker] %></span>-->
+  <!--          <span><%#= number_to_currency(stock[:price], unit: '$', precision: 2) %></span>-->
+  <%# if session[:user_id] %>
+  <%# if current_user.favorites.exists?(ticker: stock[:ticker]) %>
+  <!--              <button class="fav-btn active" data-ticker="<%#= stock[:ticker] %>">★</button>-->
+  <%# else %>
+  <!--              <button class="fav-btn" data-ticker="<%#= stock[:ticker] %>">☆</button>-->
+  <%# end %>
+  <%# end %>
+  <!--        </div>-->
+  <%# end %>
+  <!--    </div>-->
+  <!--  </div>-->
+</div>>
+
 
 <footer class="footer">
   <div class="footer-content">
@@ -119,129 +137,52 @@
 </footer>
 
 <script>
-    // Обновление данных каждые 5 минут
-    function updateFinancialData() {
-        console.log('Обновление финансовых данных...');
-    }
-
-    function highlightNewData(element) {
-        element.classList.add('highlight');
-        setTimeout(() => {
-            element.classList.remove('highlight');
-        }, 2000);
-    }
-
-    setInterval(updateFinancialData, 300000);
-
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function() {
-            this.style.transform = 'scale(1.02)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 200);
-        });
-    });
-
-    const tips = [
-        "Ведите учет всех расходов",
-        "Используйте кэшбэк-сервисы",
-        "Планируйте крупные покупки заранее"
-    ];
-
-    function addNewTip() {
-        const tipsContainer = document.querySelector('.card:first-child');
-        const randomTip = tips[Math.floor(Math.random() * tips.length)];
-        const tipElement = document.createElement('div');
-        tipElement.className = 'tip';
-        tipElement.innerHTML = `
-            <h3>💡 Совет дня</h3>
-            <p>${randomTip}</p>
-        `;
-        tipsContainer.appendChild(tipElement);
-        highlightNewData(tipElement);
-    }
-
-    setInterval(addNewTip, 3600000);
-
-    let expenseChart;
-    const expenses = {
-        labels: [],
-        data: []
-    };
-
-    function initChart() {
-        const ctx = document.getElementById('expense-chart').getContext('2d');
-        expenseChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: expenses.labels,
-                datasets: [{
-                    label: 'Расходы',
-                    data: expenses.data,
-                    borderColor: '#408945',
-                    backgroundColor: 'rgba(64, 137, 69, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Сумма (₽)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Время'
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function addExpense() {
-        const amount = parseFloat(document.getElementById('expense-amount').value);
-        const description = document.getElementById('expense-description').value;
-
-        if (amount && description) {
-            const now = new Date();
-            const timeLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-
-            expenses.labels.push(timeLabel);
-            expenses.data.push(amount);
-
-            if (!expenseChart) {
-                initChart();
-            } else {
-                expenseChart.data.labels = expenses.labels;
-                expenseChart.data.datasets[0].data = expenses.data;
-                expenseChart.update();
-            }
-
-            document.getElementById('expense-amount').value = '';
-            document.getElementById('expense-description').value = '';
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', initChart);
-
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.account-button').forEach(button => {
-            button.addEventListener('click', function() {
-                console.log('Button clicked:', this.textContent);
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 200);
-            });
-        });
-    });
+    // async function loadStocks() {
+    //     try {
+    //         const response = await fetch('/stocks/data');  // Замените на реальный путь к API
+    //         const stocks = await response.json();
+    //
+    //         const stockList = document.getElementById('stock-list');
+    //         stockList.innerHTML = ''; // Очистить контейнер перед вставкой
+    //
+    //         stocks.forEach(stock => {
+    //             const stockItem = document.createElement('div');
+    //             stockItem.classList.add('stock-item');
+    //
+    //             // Добавление информации о тикере и цене
+    //             stockItem.innerHTML = `
+    //       <span>${stock.ticker}</span>
+    //       <span>${stock.price.toFixed(2)} $</span>
+    //     `;
+    //
+    //             // Добавление кнопки для избранных акций (если пользователь залогинен)
+    //             if (userLoggedIn) {  // Проверка, если пользователь залогинен
+    //                 const button = document.createElement('button');
+    //                 button.classList.add('fav-btn');
+    //                 button.dataset.ticker = stock.ticker;
+    //
+    //                 // Проверка, если акция в избранных
+    //                 if (stock.isFavorite) {
+    //                     button.classList.add('active');
+    //                     button.textContent = '★';
+    //                 } else {
+    //                     button.textContent = '☆';
+    //                 }
+    //
+    //                 stockItem.appendChild(button);
+    //             }
+    //
+    //             // Вставка нового элемента в список
+    //             stockList.appendChild(stockItem);
+    //         });
+    //     } catch (error) {
+    //         console.error('Ошибка при загрузке акций:', error);
+    //     }
+    // }
+    //
+    // // Вызов функции загрузки акций при загрузке страницы
+    // window.onload = loadStocks;
+    //app/javascript/packs/favorites.js
 
     document.addEventListener('DOMContentLoaded', () => {
         const stockListContainer = document.querySelector('.stock-list'); // Контейнер для списка акций
@@ -255,19 +196,19 @@
                     'X-CSRF-Token': getCSRFToken()
                 }
             })
-              .then(response => {
-                  if (!response.ok) {
-                      throw new Error('Сетевая ошибка');
-                  }
-                  return response.json();
-              })
-              .then(data => {
-                  renderStocks(data);
-              })
-              .catch(error => {
-                  console.error('Ошибка при загрузке акций:', error);
-                  showNotification('Произошла ошибка при загрузке акций.', 'error');
-              });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сетевая ошибка');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    renderStocks(data);
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке акций:', error);
+                    showNotification('Произошла ошибка при загрузке акций.', 'error');
+                });
         }
 
         // Функция для рендеринга акций в DOM
@@ -319,6 +260,7 @@
             }
         }
 
+        // Функция для добавления акции в избранное
 
 
         // Функция для получения CSRF-токена
@@ -329,7 +271,11 @@
 
         // Функция для отображения уведомлений
         function showNotification(message, type = 'info') {
+            // Реализуйте свою логику уведомлений
+            // Например, используя alert:
             alert(message);
+            // Или используя библиотеку уведомлений, например Toastr:
+            // toastr[type](message);
         }
 
         // Функция для обновления localStorage
