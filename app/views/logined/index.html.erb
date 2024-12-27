@@ -60,17 +60,19 @@
 </section>
 
 <div class="container">
-  <div class="card">
-    <h2>Финансовые советы</h2>
-    <div class="advice-list">
-      <% $arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
-        </div>
-      <% end %>
+    <div class="card">
+      <h2>Финансовые советы</h2>
+      <div class="advice-list">
+        <% $arr_advices.each do |advice| %>
+          <div class="tip">
+            <h3>💡 Полезный совет</h3>
+            <p><%= advice.content %></p>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+
+
 
   <div class="card">
     <h2>Курсы валют</h2>

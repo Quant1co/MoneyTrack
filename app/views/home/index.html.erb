@@ -25,15 +25,6 @@
     <%= link_to "Начать копить", login_path, class: "account-button" %>
   </div>
 
-  <div class="expense-tracker">
-    <h2>Отслеживание расходов</h2>
-    <div class="expense-form">
-      <input type="number" id="expense-amount" placeholder="Введите сумму расхода" min="0" step="0.01">
-      <input type="text" id="expense-description" placeholder="Описание расхода">
-      <button onclick="addExpense()">Добавить расход</button>
-    </div>
-    <canvas id="expense-chart"></canvas>
-  </div>
 
   <div class="account-card">
     <h2>Основной счет</h2>
@@ -46,17 +37,18 @@
 </section>
 
 <div class="container">
-  <div class="card">
-    <h2>Финансовые советы</h2>
-    <div class="advice-list">
-      <% $arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
-        </div>
-      <% end %>
+    <div class="card">
+      <h2>Финансовые советы</h2>
+      <div class="advice-list">
+        <% $arr_advices.each do |advice| %>
+          <div class="tip">
+            <h3>💡 Полезный совет</h3>
+            <p><%= advice.content %></p>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+
 
 
   <div class="card">

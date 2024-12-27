@@ -3,7 +3,7 @@ require 'rails_helper'
 
 RSpec.describe "Sessions", type: :request do
   describe "POST /login" do
-    let!(:user) { User.create!(full_name: 'Ivan', email: 'ivan@example.com', phone: '89999999999', password: 'test1234') }
+    let!(:user) { User.create!(full_name: 'Ivan', email: 'ivan@example.com', phone: '8(999)999-9999', password: 'test1234') }
 
     context "с корректными данными" do
       it "логинит пользователя и редиректит" do

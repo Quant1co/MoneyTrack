@@ -5,7 +5,7 @@ RSpec.describe "LoginedController", type: :request do
   let!(:user) do
     User.create!(full_name: 'LoginedUser',
                  email: 'login@example.com',
-                 phone: '89991234567',
+                 phone: '8(999)123-4567',
                  password: 'pass1234')
   end
 
