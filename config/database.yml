@@ -19,4 +19,4 @@ test:
 production:
   primary:
     <<: *default
-    database: MoneyTrack
+    database: moneytrack_9upt
