@@ -6,7 +6,7 @@ class StocksController < ApplicationController
     service = StockPriceService.new(api_key)
 
     #Получаем тикеры популярных акций
-    @tickers = service.get_popular_tickers(5)
+    @tickers = service.get_popular_tickers(15)
 
     #tickers = ['AAPL', 'MSFT', 'AMZN', 'TSLA', 'GOOG', 'META', 'NVDA', 'BRK.A', 'JNJ', 'JPM', 'V', 'PG', 'WMT', 'HD', 'KO']
 
