@@ -7,7 +7,7 @@
 <body>
 <header class="header">
   <div class="auth-buttons">
-    <a class="auth-button profile-btn">Мой профиль</a>
+<!--    <a class="auth-button profile-btn">Мой профиль</a>-->
     <%= link_to 'Выйти', logout_path, class: 'auth-button logout-btn', data: { confirm: 'Вы уверены, что хотите выйти?' } %>
   </div>
   <h1>MoneyTrack</h1>
@@ -43,34 +43,27 @@
 
   <div class="account-card">
   <h2>Основной счет</h2>
-  <div class="balance">150,000 ₽</div>
-  <div class="account-info">
-    <p>Доступно: 145,000 ₽</p>
-    <p>Заблокировано: 5,000 ₽</p>
+  <div class="balance"><%= $account.balance %></div>
+    <%=link_to 'Перейти в основной счет', account_path , class: 'account-button goal-btn' %>
   </div>
-  <div class="account-info">
-    <p>Последние операции:</p>
-    <p>Продукты -2,500 ₽</p>
-    <p>Кафе -800 ₽</p>
-    <p>Транспорт -100 ₽</p>
-  </div>
-  <%=link_to 'Перейти в основной счет', account_path , class: 'account-button goal-btn' %>
 </div>
 
 </section>
 
 <div class="container">
-  <div class="card">
-    <h2>Финансовые советы</h2>
-    <div class="advice-list">
-      <% $arr_advices.each do |advice| %>
-        <div class="tip">
-          <h3>💡 Полезный совет</h3>
-          <p><%= advice.content %></p>
-        </div>
-      <% end %>
+    <div class="card">
+      <h2>Финансовые советы</h2>
+      <div class="advice-list">
+        <% $arr_advices.each do |advice| %>
+          <div class="tip">
+            <h3>💡 Полезный совет</h3>
+            <p><%= advice.content %></p>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+
+
 
   <div class="card">
     <h2>Курсы валют</h2>
