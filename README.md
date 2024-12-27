@@ -18,7 +18,7 @@
 
 
 
-Сборка под linux:
+### Сборка под linux:
 1. Устанавливаем ruby on rails
 2. Postgress. Для установки гема pg, нужен postgres Устанавливаем postgres: `sudo apt install postgresql postgresql-contrib` (Возможно придется ещё поставить `sudo apt install libpq-dev`)
 3. Устанавливаем гемы-зависимости для этого проекта (их можно посмотерть с помощью команды bunlde list или в Gemfile) с помощью команды `bundle install` или `bundle install --gemfile /<Путь к вашему гемфайлу>/Gemfile`
@@ -34,6 +34,8 @@
 6. В терминале появиться надпись Listening on http://127.0.0.1:3000 переходи по этому адресу. Если все норм, то вы увидите наш вебсайт
 7. Если у вас отсутствуют файлы application.js их необходимо добавить в assets/builds/
 
-
-
-
+### Запуск юнит тестов
+Для запуска тестов необходимо 
+1. Накатить миграцию в тестовую бд `rails db:migrate RAILS_ENV=test` 
+2. Прописать `bundle install`
+3. Вызвать тесты `bunlde exec rspec` 
