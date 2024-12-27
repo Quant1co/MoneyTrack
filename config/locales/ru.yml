@@ -11,3 +11,9 @@ ru:
       header:
         one: "Упс:"
         other: "Упс:"
+    ru:
+      transaction:
+        types:
+          income: "Доход"
+          expense: "Расход"
+

@@ -1,18 +1,57 @@
-<h1>Создать новую транзакцию</h1>
+<html><head>
+  <meta charset="UTF-8">
+  <title>MoneyTrack - Копилка</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'saving', media: 'all' %>
+</head>
+<style>
+    .sa-card {
+        text-align: center;
+        width: 80%; /* Занимает 80% ширины контейнера */
+        max-width: 400px; /* Максимальная ширина блока */
+        margin: 0 auto; /* Центрировать блок */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+</style>
+<body>
+<header class="header">
+  <div class="auth-buttons">
+    <a class="auth-button profile-btn">Мой профиль</a>
+    <%= link_to "Выйти в транзакции", account_path, method: :get, class: "auth-button logout-btn" %>
+    <!--    <a class="auth-button logout-btn">Выйти</a>-->
+  </div>
+  <h1>MoneyTrack</h1>
+  <p>Добавить транзакцию</p>
+</header>
+<div class = "sa-card", style="text-align: center;">
 <%= form_with model: @transaction, url: accounts_path do |form| %>
   <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :name, "Имя транзакции" %>
+  </div>
+    <div>
+    <%= form.text_field :name, class: "savings-input", maxlength: 15%>
   </div>
   <div>
-    <%= form.label :amount %>
-    <%= form.number_field :amount %>
+    <%= form.label :amount, "Сколько" %>
   </div>
   <div>
-    <%= form.label :transaction_type %>
-    <%= form.select :transaction_type, ['income', 'expense'] %>
+    <%= form.number_field :amount,class: "savings-input", maxlength: 8%>
   </div>
   <div>
-    <%= form.submit 'Создать транзакцию' %>
+    <%= form.label :transaction_type, "Тип операции" %>
+  </div>
+    <div>
+      <%= form.label :transaction_type, "income-расход,expence-доход" %>
+    </div>
+    <div>
+      <%= form.select :transaction_type, [[t('transaction.types.income'), 'income'], [t('transaction.types.expense'), 'expense']] %>
+    </div>
+  <div>
+    <%= form.submit 'Создать транзакцию',class:"savings-btn add-btn" %>
   </div>
 <% end %>
+</div>
