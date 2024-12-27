@@ -1,0 +1,126 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MoneyTrack - Ваш личный финансовый помощник;</title>
+</head>
+<body>
+    <header class="header">
+        <h1>MoneyTrack - Основной счет</h1>
+        <p>Управление финансами и операциями</p>
+    </header>
+
+    <div class="account-grid">
+        <div class="account-card">
+            <div class="account-balance">
+              <h1>Счет пользователя: <%= current_user.email %></h1>
+              <p>Баланс: <%= number_to_currency(@account.balance) %></p>
+            </div>
+
+            <div class="transaction-list">
+                <!-- Список операций со скролом (скролл надо добавить) -->
+                <div class="transaction-item">
+                    <div class="transaction-details">
+                        <strong>Описание операции</strong>
+                        <span class="transaction-category">вид операции</span>
+                        <span>дата</span>
+                    </div>
+                    <span class="withdrawal">сумма операции &#x20bd;</span>
+                </div>
+            </div>
+
+            <div class="transfer-form">
+                <h3>Новая транзакция</h3>
+                <input type="text" placeholder="Описание">
+                <input type="number" placeholder="Сумма">
+                <select class="form-control">
+                    <option>Доход</option>
+                    <option>Расход</option>
+                </select>
+                <button class="goal-btn">Добавить операцию</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Москва, ул. Ленина, 123</p>
+                <p>8 (800) 123-45-67</p>
+                <p>support@moneytrack.ru</p>
+            </div>
+            <div class="footer-section">
+                <h3>Работа офиса</h3>
+                <p>Пн-Пт: 9:00 - 20:00</p>
+                <p>Сб-Вс: 10:00 - 17:00</p>
+                <p>Перерыв: 12:00 - 13:00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Социальные сети</h3>
+                <div class="social-links">
+                    <a>VK</a>
+                    <a>Telegram</a>
+                    <a>YouTube</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p> 2024 MoneyTrack. 2024 MoneyTrack. Все права защищены.</p>
+        </div>
+    </footer>
+
+<script>document.addEventListener('DOMContentLoaded', function () {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  const transferForm = document.querySelector('.transfer-form');
+  transferForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const amount = this.querySelector('input[type="number"]').value;
+    const description = this.querySelector('input[type="text"]').value;
+    if (!amount || !description) {
+      showNotification('Пожалуйста, заполните все поля');
+      return;
+    }
+    showNotification('Транзакция добавлена');
+    this.reset();
+  });
+});
+function showNotification(message) {
+  let container = document.getElementById('notification-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'notification-container';
+    container.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        `;
+    document.body.appendChild(container);
+  }
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+        background: #2c5530;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        margin-top: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease-out;
+    `;
+  notification.textContent = message;
+  container.appendChild(notification);
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => {
+      container.removeChild(notification);
+    }, 300);
+  }, 3000);
+}</script>
+</body>
+</html>
