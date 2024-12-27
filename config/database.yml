@@ -9,14 +9,14 @@ default: &default
 development:
   primary:
     <<: *default
-    database: your_app_development
+    database: money_track_development
 
 test:
   primary:
     <<: *default
-    database: your_app_test
+    database: money_track_test
 
 production:
   primary:
     <<: *default
-    database: your_app_production
+    database: MoneyTrack
