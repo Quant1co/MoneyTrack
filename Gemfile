@@ -74,6 +74,6 @@ group :test do
   gem 'nokogiri'
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
-  gem 'rspec-rails', '~> 6.0'
+  gem 'rspec-rails', '~> 7.1'
   gem "webmock"
 end
